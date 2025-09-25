@@ -11,7 +11,7 @@ import { NewApplicationForm } from './components/NewApplicationForm';
 import { Reports } from './components/Reports';
 import { Settings } from './components/Settings';
 import { UserProfile } from './components/UserProfile';
-import type { User, Applicant, Repayment } from './types';
+import type { User, Applicant, Message } from './types';
 import { UserRole, LoanStatus, BusinessSector } from './types';
 import { Toast } from './components/ui/Toast';
 
@@ -19,29 +19,21 @@ import { Toast } from './components/ui/Toast';
 const USERS_DATA: User[] = [
     { id: 'user-1', name: 'Admin User', email: 'admin@nwangele.gov.ng', role: UserRole.Admin, ward: 'Amuzi' },
     { id: 'user-2', name: 'Loan Officer', email: 'officer@officer.nwangele.gov.ng', role: UserRole.Officer, ward: 'Abajah' },
-    // FIX: Add isBvnVerified to mock data for demonstration purposes.
-    { id: 'user-3', name: 'Adaobi Ekwueme', email: 'user@email.com', role: UserRole.Applicant, ward: 'Isu', nin: '12345678901', isBvnVerified: true },
-    { id: 'user-4', name: 'Buchi Chukwu', email: 'buchi@email.com', role: UserRole.Applicant, ward: 'Umuozu' },
+    { id: 'user-3', name: 'Adaobi Ekwueme', email: 'user@email.com', role: UserRole.Applicant, ward: 'Isu', nin: '12345678901', isBvnVerified: false },
+    { id: 'user-4', name: 'Buchi Chukwu', email: 'buchi@email.com', role: UserRole.Applicant, ward: 'Umuozu', isBvnVerified: true, profilePictureUrl: 'https://i.pravatar.cc/150?u=buchi@email.com' },
     { id: 'user-5', name: 'Chinedu Eze', email: 'chinedu@email.com', role: UserRole.Applicant, ward: 'Dim-Na-Nume' },
 ];
 
 const APPLICANTS_DATA: Applicant[] = [
-    { id: 'APP-001', userId: 'user-3', name: 'Adaobi Ekwueme', businessName: 'Adaobi Farms', sector: BusinessSector.Agriculture, loanAmount: 750000, loanPurpose: 'Purchase of fertilizers and seeds for the next planting season.', businessDescription: 'A small-scale farm focused on organic cassava and yam cultivation.', applicationDate: '2024-07-15', status: LoanStatus.Pending, documents: [{name: 'Business Plan.pdf', url: '#'}, {name: 'ID_Card.png', url: '#'}], bankName: 'Zenith Bank', accountNumber: '1234567890', accountName: 'Adaobi Ekwueme' },
+    { id: 'APP-001', userId: 'user-3', name: 'Adaobi Ekwueme', businessName: 'Adaobi Farms', sector: BusinessSector.Agriculture, loanAmount: 750000, loanPurpose: 'Purchase of fertilizers and seeds for the next planting season.', businessDescription: 'A small-scale farm focused on organic cassava and yam cultivation.', applicationDate: '2024-07-15', status: LoanStatus.Pending, documents: [{name: 'Business Plan.pdf', url: '#'}, {name: 'ID_Card.png', url: '#'}], bankName: 'Zenith Bank', accountNumber: '1234567890', accountName: 'Adaobi Ekwueme',
+      messages: [
+        { id: 'msg-1', senderId: 'user-2', senderName: 'Loan Officer', content: 'Good day, please can you provide a more detailed breakdown of how the funds will be used?', timestamp: '2024-07-16 10:30 AM'},
+        { id: 'msg-2', senderId: 'user-3', senderName: 'Adaobi Ekwueme', content: 'Thank you for your message. ₦350,000 will be for high-yield seeds, ₦250,000 for organic fertilizers, and ₦150,000 for hiring temporary labor during planting.', timestamp: '2024-07-16 11:15 AM'},
+      ]
+    },
     { id: 'APP-002', userId: 'user-4', name: 'Buchi Chukwu', businessName: 'Buchi Tech Solutions', sector: BusinessSector.Technology, loanAmount: 1500000, loanPurpose: 'To buy new laptops and software for our development team.', businessDescription: 'A startup providing web development services to local businesses.', applicationDate: '2024-07-12', status: LoanStatus.Approved, documents: [{name: 'Proposal.pdf', url: '#'}], bankName: 'GTBank', accountNumber: '0987654321', accountName: 'Buchi Tech Solutions' },
-    { id: 'APP-003', userId: 'user-3', name: 'Adaobi Ekwueme', businessName: 'Adaobi Weaves', sector: BusinessSector.Manufacturing, loanAmount: 400000, loanPurpose: 'To buy a new weaving machine.', businessDescription: 'Handmade traditional fabrics.', applicationDate: '2023-01-20', status: LoanStatus.Repaid, documents: [], bankName: 'First Bank', accountNumber: '1122334455', accountName: 'Adaobi Ekwueme',
-      repaymentSchedule: [
-        { id: 'rp-1-3', dueDate: '2023-02-20', amountDue: 135000, status: 'Paid' },
-        { id: 'rp-2-3', dueDate: '2023-03-20', amountDue: 135000, status: 'Paid' },
-        { id: 'rp-3-3', dueDate: '2023-04-20', amountDue: 135000, status: 'Paid' },
-      ]
-    },
-    { id: 'APP-004', userId: 'user-5', name: 'Chinedu Eze', businessName: 'Eze\'s Eatery', sector: BusinessSector.Services, loanAmount: 250000, loanPurpose: 'To renovate the kitchen area.', businessDescription: 'A local restaurant serving traditional Nigerian dishes.', applicationDate: '2024-06-30', status: LoanStatus.Disbursed, documents: [{name: 'Quotation.pdf', url: '#'}],
-      repaymentSchedule: [
-        { id: 'rp-1-4', dueDate: '2024-07-30', amountDue: 85000, status: 'Paid' },
-        { id: 'rp-2-4', dueDate: '2024-08-30', amountDue: 85000, status: 'Due' },
-        { id: 'rp-3-4', dueDate: '2024-09-30', amountDue: 85000, status: 'Due' },
-      ]
-    },
+    { id: 'APP-003', userId: 'user-3', name: 'Adaobi Ekwueme', businessName: 'Adaobi Weaves', sector: BusinessSector.Manufacturing, loanAmount: 400000, loanPurpose: 'To buy a new weaving machine.', businessDescription: 'Handmade traditional fabrics.', applicationDate: '2023-01-20', status: LoanStatus.Repaid, documents: [], bankName: 'First Bank', accountNumber: '1122334455', accountName: 'Adaobi Ekwueme' },
+    { id: 'APP-004', userId: 'user-5', name: 'Chinedu Eze', businessName: 'Eze\'s Eatery', sector: BusinessSector.Services, loanAmount: 250000, loanPurpose: 'To renovate the kitchen area.', businessDescription: 'A local restaurant serving traditional Nigerian dishes.', applicationDate: '2024-06-30', status: LoanStatus.Disbursed, documents: [{name: 'Quotation.pdf', url: '#'}] },
     { id: 'APP-005', userId: 'user-5', name: 'Eze\'s Dry Cleaning', businessName: 'Eze\'s Dry Cleaning', sector: BusinessSector.Services, loanAmount: 600000, loanPurpose: 'For new washing machines.', businessDescription: 'A new dry cleaning business.', applicationDate: '2024-05-18', status: LoanStatus.Rejected, documents: [] },
 ];
 
@@ -82,6 +74,13 @@ const App: React.FC = () => {
     if (window.innerWidth >= 1024) {
       setSidebarOpen(true);
     }
+    const handleResize = () => {
+        if (window.innerWidth < 1024) {
+            setSidebarOpen(false);
+        }
+    };
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
   }, []);
 
   useEffect(() => {
@@ -115,6 +114,9 @@ const App: React.FC = () => {
       setSelectedApplicant(null);
       setCurrentView(view);
     }
+     if (window.innerWidth < 1024) {
+      setSidebarOpen(false);
+    }
   };
   
   const handleViewProfile = (applicant: Applicant) => {
@@ -129,21 +131,9 @@ const App: React.FC = () => {
 
   const handleUpdateStatus = (applicantId: string, newStatus: LoanStatus) => {
     setApplicants(prev => 
-      prev.map(app => {
-        if (app.id === applicantId) {
-          const updatedApp = { ...app, status: newStatus };
-          // If disbursed, generate a repayment schedule
-          if (newStatus === LoanStatus.Disbursed && !updatedApp.repaymentSchedule) {
-            updatedApp.repaymentSchedule = [
-              { id: `rp-1-${app.id}`, dueDate: '2024-08-30', amountDue: app.loanAmount / 3, status: 'Due' },
-              { id: `rp-2-${app.id}`, dueDate: '2024-09-30', amountDue: app.loanAmount / 3, status: 'Due' },
-              { id: `rp-3-${app.id}`, dueDate: '2024-10-30', amountDue: app.loanAmount / 3, status: 'Due' },
-            ];
-          }
-          return updatedApp;
-        }
-        return app;
-      })
+      prev.map(app => 
+        app.id === applicantId ? { ...app, status: newStatus } : app
+      )
     );
     setToast({ message: `Application status updated to ${newStatus}`, type: 'success' });
     handleBackToList();
@@ -178,37 +168,42 @@ const App: React.FC = () => {
     setCurrentView('applications');
   };
 
-  // FIX: Add handler for BVN verification to update user state.
+  const handleSendMessage = (applicantId: string, content: string) => {
+    if (!currentUser) return;
+    
+    const newMessage: Message = {
+      id: `msg-${Date.now()}`,
+      senderId: currentUser.id,
+      senderName: currentUser.name,
+      content,
+      timestamp: new Date().toLocaleString('en-US', { year: 'numeric', month: 'short', day: 'numeric', hour: 'numeric', minute: 'numeric', hour12: true }),
+    };
+
+    const updateApplicantState = (prev: Applicant | null): Applicant | null => {
+      if (!prev) return null;
+      return {
+        ...prev,
+        messages: [...(prev.messages || []), newMessage],
+      };
+    };
+
+    setApplicants(prevApps => prevApps.map(app => 
+        app.id === applicantId ? updateApplicantState(app) as Applicant : app
+    ));
+
+    if (selectedApplicant?.id === applicantId) {
+      setSelectedApplicant(updateApplicantState);
+    }
+  };
+
   const handleBvnVerify = (userId: string) => {
     setUsers(prevUsers =>
       prevUsers.map(u => (u.id === userId ? { ...u, isBvnVerified: true } : u))
     );
     if (currentUser?.id === userId) {
-      setCurrentUser(prev => prev ? { ...prev, isBvnVerified: true } : null);
+      setCurrentUser(prev => (prev ? { ...prev, isBvnVerified: true } : null));
     }
-    setToast({ message: 'BVN Verified Successfully!', type: 'success' });
-  };
-
-  const handleUpdateRepayment = (applicantId: string, repaymentId: string, newStatus: 'Paid') => {
-      setApplicants(prevApps => prevApps.map(app => {
-          if (app.id === applicantId) {
-              const updatedSchedule = app.repaymentSchedule?.map(r => 
-                  r.id === repaymentId ? { ...r, status: newStatus } : r
-              );
-              return { ...app, repaymentSchedule: updatedSchedule };
-          }
-          return app;
-      }));
-       if (selectedApplicant?.id === applicantId) {
-            setSelectedApplicant(prev => {
-                if (!prev) return null;
-                const updatedSchedule = prev.repaymentSchedule?.map(r => 
-                    r.id === repaymentId ? { ...r, status: newStatus } : r
-                );
-                return { ...prev, repaymentSchedule: updatedSchedule };
-            });
-      }
-      setToast({ message: 'Repayment marked as paid!', type: 'success' });
+    setToast({ message: 'BVN verified successfully!', type: 'success' });
   };
 
   const authContextValue = useMemo(() => ({ currentUser, login, logout }), [currentUser]);
@@ -227,18 +222,15 @@ const App: React.FC = () => {
 
   const renderContent = () => {
     switch (currentView) {
-      // FIX: Pass the 'users' prop to Dashboard as required by its props interface.
-      case 'dashboard': return <Dashboard applicants={applicants} users={users} onViewProfile={handleViewProfile} onStartNewApplication={() => setCurrentView('new-application')} searchTerm={searchTerm} />;
+      case 'dashboard': return <Dashboard applicants={applicants} onViewProfile={handleViewProfile} onStartNewApplication={() => setCurrentView('new-application')} searchTerm={searchTerm} users={users} />;
       case 'applications': return <Applications applicants={applicants} onViewProfile={handleViewProfile} onStartNewApplication={() => setCurrentView('new-application')} searchTerm={searchTerm} />;
       case 'users': return <Users users={users} />;
-      case 'profile': return selectedApplicant && <ApplicantProfile applicant={selectedApplicant} onBack={handleBackToList} onUpdateStatus={handleUpdateStatus} onUpdateApplicantDetails={handleUpdateApplicantDetails} onUpdateRepayment={handleUpdateRepayment} />;
+      case 'profile': return selectedApplicant && <ApplicantProfile applicant={selectedApplicant} onBack={handleBackToList} onUpdateStatus={handleUpdateStatus} onUpdateApplicantDetails={handleUpdateApplicantDetails} onSendMessage={handleSendMessage} />;
       case 'new-application': return <NewApplicationForm onSubmit={handleNewApplicationSubmit} onCancel={() => setCurrentView('applications')} />;
       case 'reports': return <Reports applicants={applicants} users={users} />;
       case 'settings': return <Settings user={currentUser} onUpdateUser={handleUpdateUser} />;
-      // FIX: Pass 'onBvnVerify' and 'setToast' props to UserProfile as required.
       case 'my-profile': return <UserProfile user={currentUser} onUpdateUser={handleUpdateUser} onBvnVerify={handleBvnVerify} setToast={setToast} />;
-      // FIX: Pass the 'users' prop to Dashboard as required by its props interface.
-      default: return <Dashboard applicants={applicants} users={users} onViewProfile={handleViewProfile} onStartNewApplication={() => setCurrentView('new-application')} searchTerm={searchTerm} />;
+      default: return <Dashboard applicants={applicants} onViewProfile={handleViewProfile} onStartNewApplication={() => setCurrentView('new-application')} searchTerm={searchTerm} users={users} />;
     }
   };
 
@@ -254,7 +246,6 @@ const App: React.FC = () => {
         )}
         <Sidebar currentView={currentView} onNavigate={handleNavigate} isOpen={isSidebarOpen} setOpen={setSidebarOpen} />
         <div className={`flex-1 flex flex-col transition-all duration-300 ${isSidebarOpen ? 'lg:ml-64' : 'lg:ml-20'}`}>
-          {/* FIX: Pass 'onNavigate' prop to Header as required by its props interface. */}
           <Header 
             onToggleSidebar={() => setSidebarOpen(!isSidebarOpen)}
             isSidebarOpen={isSidebarOpen}

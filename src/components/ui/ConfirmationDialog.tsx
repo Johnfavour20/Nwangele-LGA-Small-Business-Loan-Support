@@ -46,7 +46,7 @@ export const ConfirmationDialog: React.FC<ConfirmationDialogProps> = ({ isOpen, 
               onConfirm();
               onClose();
             }}
-            className="w-full justify-center sm:w-auto bg-red-600 text-white hover:bg-red-700 focus:ring-red-500"
+            className="w-full justify-center sm:w-auto !bg-red-600 hover:!bg-red-700 focus:!ring-red-500"
           >
             Confirm
           </Button>

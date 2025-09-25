@@ -146,13 +146,13 @@ export const UserProfile: React.FC<UserProfileProps> = ({ user, onUpdateUser, on
             <h3 className="text-lg font-semibold text-gray-800 dark:text-gray-100 mb-4">Identity Verification</h3>
             {user.isBvnVerified ? (
                 <div className="flex items-center gap-3 p-4 bg-green-50 dark:bg-green-900/40 border border-green-200 dark:border-green-800 rounded-lg">
-                    {ICONS.shieldCheck}
+                    <span className="text-green-600 dark:text-green-400">{ICONS.shieldCheck}</span>
                     <p className="font-semibold text-green-800 dark:text-green-300">Your identity has been successfully verified.</p>
                 </div>
             ) : (
                 <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 p-4 bg-yellow-50 dark:bg-yellow-900/40 border border-yellow-200 dark:border-yellow-800 rounded-lg">
                     <div className="flex items-start gap-3">
-                        {ICONS.warning}
+                        <span className="text-yellow-500">{ICONS.warning}</span>
                         <p className="text-yellow-800 dark:text-yellow-300">
                             <span className="font-semibold">Verify your identity.</span><br/>
                             <span className="text-sm">This will increase your Trust Score and loan limit.</span>

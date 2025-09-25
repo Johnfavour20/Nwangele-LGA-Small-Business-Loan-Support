@@ -16,7 +16,7 @@ interface DashboardProps {
   users: User[];
 }
 
-const AdminDashboard: React.FC<Omit<DashboardProps, 'onStartNewApplication' | 'users'>> = ({ onViewProfile, searchTerm, applicants }) => {
+const AdminDashboard: React.FC<Omit<DashboardProps, 'onStartNewApplication'>> = ({ onViewProfile, searchTerm, applicants }) => {
     const totalApplications = applicants.length;
     const totalDisbursed = applicants
         .filter(a => a.status === LoanStatus.Disbursed || a.status === LoanStatus.Repaid)
@@ -48,7 +48,7 @@ const AdminDashboard: React.FC<Omit<DashboardProps, 'onStartNewApplication' | 'u
     );
 
     return (
-        <div className="space-y-8">
+        <div className="space-y-8 animate-fade-in">
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
                 <Card title="Total Applications" value={totalApplications.toString()} trend="+5% this month" />
                 <Card title="Amount Disbursed" value={`₦${(totalDisbursed / 1000000).toFixed(2)}M`} trend="+12% this month" />
@@ -117,7 +117,7 @@ const AdminDashboard: React.FC<Omit<DashboardProps, 'onStartNewApplication' | 'u
     );
 };
 
-const ApplicantDashboard: React.FC<DashboardProps> = ({ onViewProfile, onStartNewApplication, searchTerm, applicants, users }) => {
+const ApplicantDashboard: React.FC<DashboardProps> = ({ onViewProfile, onStartNewApplication, searchTerm, applicants }) => {
     const { currentUser } = useAuth();
     const myApps = applicants.filter(app => app.userId === currentUser?.id);
     
@@ -130,18 +130,17 @@ const ApplicantDashboard: React.FC<DashboardProps> = ({ onViewProfile, onStartNe
     const trustScore = useMemo(() => {
         if (!currentUser) return 0;
         let score = 30; // Base score
-        // FIX: Add optional chaining to prevent runtime error if isBvnVerified is undefined.
-        if (currentUser?.isBvnVerified) score += 25;
-        if (currentUser.nin) score += 15;
+        if (currentUser?.isBvnVerified) score += 35;
+        if (currentUser.nin) score += 20;
         const hasRepaidLoan = myApps.some(app => app.status === LoanStatus.Repaid);
-        if (hasRepaidLoan) score += 25;
+        if (hasRepaidLoan) score += 15;
         return Math.min(score, 100);
     }, [currentUser, myApps]);
 
     const loanLimit = trustScore * 15000;
 
     return (
-        <div className="space-y-6">
+        <div className="space-y-6 animate-fade-in">
             <div className="bg-white dark:bg-gray-800 p-4 sm:p-6 rounded-xl shadow-md border border-slate-200 dark:border-gray-700">
                 <h2 className="text-2xl font-bold text-gray-800 dark:text-gray-100">Welcome, {currentUser?.name}!</h2>
                 <p className="text-gray-600 dark:text-gray-300">Here's a summary of your loan applications and profile status.</p>

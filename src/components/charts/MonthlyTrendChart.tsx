@@ -28,7 +28,7 @@ export const MonthlyTrendChart: React.FC<ChartProps> = ({ data }) => {
                 borderRadius: '0.75rem'
             }}
         />
-        <Line type="monotone" dataKey="applications" stroke={lineColor} strokeWidth={2} dot={{ r: 4 }} activeDot={{ r: 6 }} />
+        <Line type="monotone" dataKey="applications" stroke={lineColor} strokeWidth={2} dot={{ r: 4 }} activeDot={{ r: 6 }} name="Applications" />
       </LineChart>
     </ResponsiveContainer>
   );

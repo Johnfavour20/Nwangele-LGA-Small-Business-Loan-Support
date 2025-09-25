@@ -5,13 +5,15 @@ import { useAuth } from '../App';
 import { analyzeApplication } from '../services/geminiService';
 import { Badge } from './ui/Badge';
 import { Button } from './ui/Button';
+import { Messaging } from './new/Messaging';
+import { CollapsibleSection } from './ui/CollapsibleSection';
 
 interface ApplicantProfileProps {
   applicant: Applicant;
   onBack: () => void;
   onUpdateStatus: (applicantId: string, newStatus: LoanStatus) => void;
   onUpdateApplicantDetails: (applicantId: string, details: Partial<Applicant>) => void;
-  onUpdateRepayment: (applicantId: string, repaymentId: string, status: 'Paid') => void;
+  onSendMessage: (applicantId: string, content: string) => void;
 }
 
 const ProfileDetail: React.FC<{ label: string; value: React.ReactNode; className?: string }> = ({ label, value, className }) => (
@@ -83,17 +85,7 @@ const ChecklistItem: React.FC<{ text: string; isChecked: boolean; }> = ({ text, 
     </li>
 );
 
-const RepaymentStatusBadge: React.FC<{ status: 'Paid' | 'Due' | 'Overdue' }> = ({ status }) => {
-  const styles: Record<typeof status, string> = {
-    Paid: 'bg-green-100 text-green-800 dark:bg-green-900/50 dark:text-green-300',
-    Due: 'bg-yellow-100 text-yellow-800 dark:bg-yellow-900/50 dark:text-yellow-300',
-    Overdue: 'bg-red-100 text-red-800 dark:bg-red-900/50 dark:text-red-300',
-  };
-  return <span className={`px-3 py-1 text-xs font-semibold rounded-full inline-block ${styles[status]}`}>{status}</span>;
-};
-
-
-export const ApplicantProfile: React.FC<ApplicantProfileProps> = ({ applicant, onBack, onUpdateStatus, onUpdateApplicantDetails, onUpdateRepayment }) => {
+export const ApplicantProfile: React.FC<ApplicantProfileProps> = ({ applicant, onBack, onUpdateStatus, onUpdateApplicantDetails, onSendMessage }) => {
     const { currentUser } = useAuth();
     const [analysis, setAnalysis] = useState<GeminiAnalysis | null>(null);
     const [isLoading, setIsLoading] = useState(true);
@@ -101,6 +93,7 @@ export const ApplicantProfile: React.FC<ApplicantProfileProps> = ({ applicant, o
     const [activeTab, setActiveTab] = useState('details');
     
     const isActionable = currentUser?.role === UserRole.Admin || currentUser?.role === UserRole.Officer;
+    const canMessage = isActionable || applicant.userId === currentUser?.id;
 
     useEffect(() => {
         const fetchAnalysis = async () => {
@@ -152,22 +145,21 @@ export const ApplicantProfile: React.FC<ApplicantProfileProps> = ({ applicant, o
 
             <div className="border-b border-gray-200 dark:border-gray-700">
                 <TabButton label="Application Details" isActive={activeTab === 'details'} onClick={() => setActiveTab('details')} />
-                {applicant.repaymentSchedule && <TabButton label="Repayment Schedule" isActive={activeTab === 'repayment'} onClick={() => setActiveTab('repayment')} />}
+                {canMessage && <TabButton label="Messages" isActive={activeTab === 'messages'} onClick={() => setActiveTab('messages')} />}
                 <TabButton label="Verification & Payout" isActive={activeTab === 'payout'} onClick={() => setActiveTab('payout')} />
             </div>
 
             {activeTab === 'details' && (
                 <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 animate-fade-in">
-                    <div className="lg:col-span-2 space-y-6">
-                        <div className="bg-white dark:bg-gray-800 p-4 sm:p-6 rounded-xl shadow-md border border-slate-200 dark:border-gray-700">
-                            <h3 className="text-xl font-bold mb-4 text-gray-700 dark:text-gray-200">Application Details</h3>
+                    <div className="lg:col-span-2 space-y-4">
+                        <CollapsibleSection title="Business & Loan Information" defaultOpen={true}>
                             <div className="space-y-4">
                                 <ProfileDetail label="Purpose of Loan" value={applicant.loanPurpose} />
                                 <ProfileDetail label="Business Description" value={<p className="whitespace-pre-wrap">{applicant.businessDescription}</p>} />
                             </div>
-                        </div>
-                        <div className="bg-white dark:bg-gray-800 p-4 sm:p-6 rounded-xl shadow-md border border-slate-200 dark:border-gray-700">
-                            <h3 className="text-xl font-bold mb-4 text-gray-700 dark:text-gray-200">Uploaded Documents</h3>
+                        </CollapsibleSection>
+
+                        <CollapsibleSection title="Uploaded Documents" defaultOpen={true}>
                             {applicant.documents.length > 0 ? (
                                 <ul className="space-y-2">
                                     {applicant.documents.map(doc => (
@@ -180,7 +172,7 @@ export const ApplicantProfile: React.FC<ApplicantProfileProps> = ({ applicant, o
                             ) : (
                                 <p className="text-gray-500 dark:text-gray-400">No documents were uploaded.</p>
                             )}
-                        </div>
+                        </CollapsibleSection>
                     </div>
 
                     {isActionable && (
@@ -265,33 +257,13 @@ export const ApplicantProfile: React.FC<ApplicantProfileProps> = ({ applicant, o
                 </div>
             )}
 
-            {activeTab === 'repayment' && applicant.repaymentSchedule && (
-                <div className="bg-white dark:bg-gray-800 p-4 sm:p-6 rounded-xl shadow-md border border-slate-200 dark:border-gray-700 animate-fade-in">
-                    <h3 className="text-xl font-bold mb-4 text-gray-700 dark:text-gray-200">Repayment Schedule</h3>
-                    <div className="overflow-x-auto">
-                        <table className="w-full text-left">
-                            <thead>
-                                <tr className="border-b dark:border-gray-700 bg-gray-50 dark:bg-gray-700/50">
-                                    <th className="p-3 font-semibold text-gray-600 dark:text-gray-300">Due Date</th>
-                                    <th className="p-3 font-semibold text-gray-600 dark:text-gray-300">Amount Due</th>
-                                    <th className="p-3 font-semibold text-gray-600 dark:text-gray-300">Status</th>
-                                    {isActionable && <th className="p-3 font-semibold text-gray-600 dark:text-gray-300">Action</th>}
-                                </tr>
-                            </thead>
-                            <tbody>
-                                {applicant.repaymentSchedule.map((item) => (
-                                    <tr key={item.id} className="border-b dark:border-gray-700">
-                                        <td className="p-3">{item.dueDate}</td>
-                                        <td className="p-3 font-medium">₦{item.amountDue.toLocaleString()}</td>
-                                        <td className="p-3"><RepaymentStatusBadge status={item.status} /></td>
-                                        {isActionable && <td className="p-3">
-                                            {item.status !== 'Paid' && <Button size="sm" onClick={() => onUpdateRepayment(applicant.id, item.id, 'Paid')}>Mark as Paid</Button>}
-                                        </td>}
-                                    </tr>
-                                ))}
-                            </tbody>
-                        </table>
-                    </div>
+            {activeTab === 'messages' && canMessage && currentUser && (
+                <div className="bg-white dark:bg-gray-800 rounded-xl shadow-md border border-slate-200 dark:border-gray-700 animate-fade-in">
+                   <Messaging 
+                     messages={applicant.messages || []}
+                     currentUser={currentUser}
+                     onSendMessage={(content) => onSendMessage(applicant.id, content)}
+                   />
                 </div>
             )}
         </div>

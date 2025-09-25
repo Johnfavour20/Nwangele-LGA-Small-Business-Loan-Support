@@ -28,16 +28,16 @@ export interface User {
   role: UserRole;
   ward?: string;
   nin?: string;
-  // FIX: Add optional properties for user profile picture and BVN verification status.
   profilePictureUrl?: string;
   isBvnVerified?: boolean;
 }
 
-export interface Repayment {
+export interface Message {
   id: string;
-  dueDate: string;
-  amountDue: number;
-  status: 'Paid' | 'Due' | 'Overdue';
+  senderId: string;
+  senderName: string;
+  content: string;
+  timestamp: string;
 }
 
 export interface Applicant {
@@ -55,7 +55,7 @@ export interface Applicant {
   bankName?: string;
   accountNumber?: string;
   accountName?: string;
-  repaymentSchedule?: Repayment[];
+  messages?: Message[];
 }
 
 export interface GeminiAnalysis {

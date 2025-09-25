@@ -92,11 +92,11 @@ export const Header: React.FC<HeaderProps> = ({ onToggleSidebar, isSidebarOpen, 
             
             {isProfileOpen && (
               <div className="absolute top-full right-0 mt-3 w-72 bg-white dark:bg-gray-800 rounded-xl shadow-2xl border dark:border-gray-700 animate-fade-in origin-top-right overflow-hidden">
-                <div className="p-4 flex items-center gap-4 border-b dark:border-gray-600 bg-gray-50 dark:bg-gray-700/50">
+                <div className="p-4 flex items-center gap-4 border-b dark:border-gray-700 bg-gray-50 dark:bg-gray-700/50">
                   <img src={profilePictureUrl} alt="User" className="w-14 h-14 rounded-full object-cover" />
                   <div>
                     <p className="font-bold text-gray-800 dark:text-gray-100">{currentUser?.name}</p>
-                    <p className="text-sm text-gray-600 dark:text-gray-400">{currentUser?.email}</p>
+                    <p className="text-sm text-gray-600 dark:text-gray-400 truncate">{currentUser?.email}</p>
                   </div>
                 </div>
                 <div className="p-4 space-y-2 text-sm">
@@ -111,7 +111,7 @@ export const Header: React.FC<HeaderProps> = ({ onToggleSidebar, isSidebarOpen, 
                     </div>
                   )}
                 </div>
-                <div className="p-2 border-t dark:border-gray-600">
+                <div className="p-2 border-t dark:border-gray-700">
                    <a
                       href="#"
                       onClick={(e) => { e.preventDefault(); handleManageAccount(); }}

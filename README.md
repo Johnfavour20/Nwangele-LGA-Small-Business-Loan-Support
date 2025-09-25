@@ -7,9 +7,9 @@
 
 ## 1. Project Overview
 
-A comprehensive, AI-enhanced database management system designed to streamline the small business loan support program in Nwangele Local Government Area, Imo State, Nigeria. This full-stack application provides a role-based portal for Applicants, Loan Officers, and Administrators, featuring an AI-powered risk assessment tool to aid in decision-making.
+A comprehensive, AI-enhanced database management system designed to streamline the small business loan support program in Nwangele Local Government Area, Imo State, Nigeria. This is a pure frontend application that provides a role-based portal for Applicants, Loan Officers, and Administrators, featuring an AI-powered risk assessment tool to aid in decision-making.
 
-The entire application is built with a **mobile-first, fully responsive design**, ensuring a seamless and accessible experience across all devices, from desktops to smartphones.
+The entire application is built with a **mobile-first, fully responsive design**, ensuring a seamless and accessible experience across all devices, from desktops to smartphones. It uses mock data and runs entirely in the browser, with no backend required.
 
 ![Login Screen](https://picsum.photos/seed/loginpage/1200/600)
 *The modern and secure login portal.*
@@ -17,7 +17,7 @@ The entire application is built with a **mobile-first, fully responsive design**
 ## 2. Core Features
 
 ### For All Users
-- **Secure Authentication:** Role-based login for Applicants, Loan Officers, and Admins.
+- **Secure Authentication:** Role-based login for Applicants, Loan Officers, and Admins (using in-browser mock data).
 - **Fully Responsive Design:** Flawless user experience on desktop, tablet, and mobile devices.
 - **Dark/Light Mode:** Theme toggling for user comfort.
 
@@ -38,7 +38,7 @@ The entire application is built with a **mobile-first, fully responsive design**
 ## 3. Technology Stack
 
 ### Frontend
-- **Framework:** React 18 with TypeScript & Vite
+- **Framework:** React 19 with TypeScript & Vite
 - **Styling:** Tailwind CSS for a utility-first, responsive, and modern design system.
 - **State Management:** React Context API for authentication, theme, and global state.
 - **Data Visualization:** Recharts for interactive and beautiful charts.
@@ -46,7 +46,7 @@ The entire application is built with a **mobile-first, fully responsive design**
 
 ## 4. Getting Started
 
-To run the frontend of this application locally, follow these steps.
+To run this application locally, follow these steps.
 
 ### Prerequisites
 - [Node.js](https://nodejs.org/) (version 18 or higher recommended)
@@ -65,18 +65,12 @@ To run the frontend of this application locally, follow these steps.
     npm install
     ```
 
-3.  **Create an environment file:**
-    Create a file named `.env` in the root of your project and add your Google Gemini API key:
-    ```
-    VITE_API_KEY=YOUR_GEMINI_API_KEY_HERE
-    ```
-
-4.  **Run the development server:**
+3.  **Run the development server:**
     Once installation is complete, start the Vite development server:
     ```bash
     npm run dev
     ```
-The application will be available at a local URL, typically `http://localhost:5173`.
+The application will be available at a local URL, typically `http://localhost:5173`. The Google Gemini API key is expected to be provided via environment variables in the execution environment.
 
 ## 5. Deployment on Vercel
 
@@ -93,11 +87,11 @@ This Vite project is configured for easy deployment on Vercel.
     - **Output Directory:** `dist`
 4.  **Add Environment Variable:**
     - In the Vercel project settings, go to "Environment Variables".
-    - Add a variable named `VITE_API_KEY` and paste your Google Gemini API key as the value.
+    - Add the environment variable for your Google Gemini API key as required by the hosting platform.
 5.  **Deploy:** Click the "Deploy" button. Vercel will build and deploy your application.
 
 ## 6. Authentication & Demo Credentials
-The application features a role-based access control system. For demonstration purposes, you can log in using the following credentials on the login screen:
+The application features a role-based access control system using mock data. For demonstration purposes, you can log in using the following credentials on the login screen:
 
 | Role      | Email                              | Password     |
 |-----------|------------------------------------|--------------|
