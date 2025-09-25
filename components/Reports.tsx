@@ -63,7 +63,7 @@ export const Reports: React.FC<ReportsProps> = ({ applicants, users }) => {
   return (
     <div className="space-y-6 animate-fade-in">
       <div className="flex justify-between items-center">
-        <h2 className="text-3xl font-bold text-gray-800 dark:text-gray-100">Reports & Analytics</h2>
+        <h2 className="text-3xl font-bold text-slate-800">Reports & Analytics</h2>
         <Button onClick={handleExport} variant="outline">
           {ICONS.export}
           Export to CSV
@@ -78,14 +78,14 @@ export const Reports: React.FC<ReportsProps> = ({ applicants, users }) => {
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-5 gap-6">
-         <div className="lg:col-span-3 bg-white dark:bg-gray-800 p-4 sm:p-6 rounded-xl shadow-md border border-slate-200 dark:border-gray-700">
-            <h3 className="text-xl font-bold mb-4 text-gray-700 dark:text-gray-200">Applications by LGA Ward</h3>
+         <div className="lg:col-span-3 bg-white p-4 sm:p-6 rounded-xl shadow-md border border-slate-200">
+            <h3 className="text-xl font-bold mb-4 text-slate-700">Applications by LGA Ward</h3>
             <div className="h-96">
                 <WardApplicationChart data={reportData.wardChartData} />
             </div>
          </div>
-         <div className="lg:col-span-2 bg-white dark:bg-gray-800 p-4 sm:p-6 rounded-xl shadow-md border border-slate-200 dark:border-gray-700">
-            <h3 className="text-xl font-bold mb-4 text-gray-700 dark:text-gray-200">Application Trend</h3>
+         <div className="lg:col-span-2 bg-white p-4 sm:p-6 rounded-xl shadow-md border border-slate-200">
+            <h3 className="text-xl font-bold mb-4 text-slate-700">Application Trend</h3>
             <div className="h-96">
                 <MonthlyTrendChart data={reportData.monthChartData} />
             </div>

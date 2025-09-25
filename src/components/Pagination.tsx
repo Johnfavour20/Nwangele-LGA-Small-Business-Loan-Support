@@ -1,3 +1,4 @@
+
 import React from 'react';
 import { ICONS } from '../constants';
 
@@ -35,7 +36,7 @@ export const Pagination: React.FC<PaginationProps> = ({
   }
 
   return (
-    <div className="flex items-center justify-between mt-4 p-2 border-t border-slate-200 text-sm text-gray-600">
+    <div className="flex flex-col sm:flex-row items-center justify-between mt-4 p-2 border-t border-slate-200 text-sm text-gray-600 gap-4">
       <div className="flex items-center gap-2">
         <span>Rows per page:</span>
         <select

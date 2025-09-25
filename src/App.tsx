@@ -11,7 +11,7 @@ import { NewApplicationForm } from './components/NewApplicationForm';
 import { Reports } from './components/Reports';
 import { Settings } from './components/Settings';
 import { UserProfile } from './components/UserProfile';
-import type { User, Applicant, Message } from './types';
+import type { User, Applicant, Message, Notification } from './types';
 import { UserRole, LoanStatus, BusinessSector } from './types';
 import { Toast } from './components/ui/Toast';
 
@@ -37,6 +37,38 @@ const APPLICANTS_DATA: Applicant[] = [
     { id: 'APP-005', userId: 'user-5', name: 'Eze\'s Dry Cleaning', businessName: 'Eze\'s Dry Cleaning', sector: BusinessSector.Services, loanAmount: 600000, loanPurpose: 'For new washing machines.', businessDescription: 'A new dry cleaning business.', applicationDate: '2024-05-18', status: LoanStatus.Rejected, documents: [] },
 ];
 
+const NOTIFICATIONS_DATA: Notification[] = [
+    {
+        id: 'notif-1',
+        userId: 'user-3',
+        title: 'Application Status Updated',
+        message: 'Your application for "Adaobi Weaves" has been updated to Repaid.',
+        timestamp: new Date(Date.now() - 1000 * 60 * 5).toISOString(), // 5 minutes ago
+        isRead: false,
+        link: { view: 'profile', applicantId: 'APP-003' },
+        type: 'status_update'
+    },
+    {
+        id: 'notif-2',
+        userId: 'user-1',
+        title: 'New Message on APP-001',
+        message: 'Adaobi Ekwueme sent a message regarding "Adaobi Farms".',
+        timestamp: new Date(Date.now() - 1000 * 60 * 60 * 2).toISOString(), // 2 hours ago
+        isRead: false,
+        link: { view: 'profile', applicantId: 'APP-001' },
+        type: 'message'
+    },
+    {
+        id: 'notif-3',
+        userId: 'user-1',
+        title: 'New Application Submitted',
+        message: 'Buchi Chukwu submitted an application for "Buchi Tech Solutions".',
+        timestamp: new Date(Date.now() - 1000 * 60 * 60 * 24).toISOString(), // 1 day ago
+        isRead: true,
+        link: { view: 'profile', applicantId: 'APP-002' },
+        type: 'new_application'
+    }
+];
 
 export type View = 'login' | 'register' | 'dashboard' | 'applications' | 'users' | 'reports' | 'settings' | 'profile' | 'new-application' | 'my-profile';
 type ToastState = { message: string, type: 'success' | 'error' } | null;
@@ -59,6 +91,7 @@ const App: React.FC = () => {
   const [users, setUsers] = useState<User[]>(USERS_DATA);
   const [applicants, setApplicants] = useState<Applicant[]>(APPLICANTS_DATA);
   const [toast, setToast] = useState<ToastState>(null);
+  const [notifications, setNotifications] = useState<Notification[]>(NOTIFICATIONS_DATA);
 
   useEffect(() => {
     if (window.innerWidth >= 1024) {
@@ -87,6 +120,38 @@ const App: React.FC = () => {
   const logout = () => {
     setCurrentUser(null);
   };
+  
+  const addNotification = (notificationData: Omit<Notification, 'id' | 'timestamp' | 'isRead'>) => {
+    const newNotification: Notification = {
+        id: `notif-${Date.now()}-${Math.random()}`,
+        timestamp: new Date().toISOString(),
+        isRead: false,
+        ...notificationData
+    };
+    setNotifications(prev => [newNotification, ...prev]);
+  };
+
+  const markNotificationAsRead = (notificationId: string) => {
+    setNotifications(prev =>
+        prev.map(n => (n.id === notificationId ? { ...n, isRead: true } : n))
+    );
+  };
+
+  const markAllNotificationsAsRead = () => {
+    setNotifications(prev =>
+        prev.map(n => (n.userId === currentUser?.id ? { ...n, isRead: true } : n))
+    );
+  };
+  
+  const handleNavigateToNotificationLink = (link: Notification['link']) => {
+    if (link?.view === 'profile') {
+        const applicantToView = applicants.find(a => a.id === link.applicantId);
+        if (applicantToView) {
+            handleViewProfile(applicantToView);
+        }
+    }
+  };
+
 
   const handleNavigate = (view: View) => {
     if (view === 'profile' && selectedApplicant) {
@@ -111,6 +176,17 @@ const App: React.FC = () => {
   };
 
   const handleUpdateStatus = (applicantId: string, newStatus: LoanStatus) => {
+    const applicant = applicants.find(app => app.id === applicantId);
+    if (applicant) {
+        addNotification({
+            userId: applicant.userId,
+            title: 'Application Status Updated',
+            message: `Your application for "${applicant.businessName}" is now ${newStatus}.`,
+            link: { view: 'profile', applicantId: applicant.id },
+            type: 'status_update'
+        });
+    }
+
     setApplicants(prev => 
       prev.map(app => 
         app.id === applicantId ? { ...app, status: newStatus } : app
@@ -143,22 +219,57 @@ const App: React.FC = () => {
   };
 
   const handleNewApplicationSubmit = () => {
-    // In a real app, this would submit to a backend and add a new application.
-    // For now, just show a success message and go to applications view.
     setToast({ message: 'Application submitted successfully!', type: 'success' });
     setCurrentView('applications');
+    
+    // Notify admins and officers
+    const adminsAndOfficers = users.filter(u => u.role === UserRole.Admin || u.role === UserRole.Officer);
+    adminsAndOfficers.forEach(user => {
+        addNotification({
+            userId: user.id,
+            title: 'New Application Submitted',
+            message: `${currentUser?.name || 'A new applicant'} has submitted an application.`,
+            type: 'new_application'
+        });
+    });
   };
 
   const handleSendMessage = (applicantId: string, content: string) => {
     if (!currentUser) return;
-    
+
+    const applicant = applicants.find(app => app.id === applicantId);
+    if (!applicant) return;
+
     const newMessage: Message = {
       id: `msg-${Date.now()}`,
       senderId: currentUser.id,
       senderName: currentUser.name,
       content,
-      timestamp: new Date().toLocaleString('en-US', { year: 'numeric', month: 'short', day: 'numeric', hour: 'numeric', minute: 'numeric', hour12: true }),
+      timestamp: new Date().toLocaleString('en-US', { hour: 'numeric', minute: 'numeric', hour12: true }),
     };
+    
+    // If current user is the applicant, notify admins/officers
+    if (currentUser.id === applicant.userId) {
+        const adminsAndOfficers = users.filter(u => u.role === UserRole.Admin || u.role === UserRole.Officer);
+        adminsAndOfficers.forEach(user => {
+            addNotification({
+                userId: user.id,
+                title: `New Message on ${applicant.id}`,
+                message: `${applicant.name} sent a message regarding "${applicant.businessName}".`,
+                link: { view: 'profile', applicantId: applicant.id },
+                type: 'message'
+            });
+        });
+    } else { // If current user is an admin/officer, notify the applicant
+        addNotification({
+            userId: applicant.userId,
+            title: 'New Message from Loan Officer',
+            message: `You have a new message regarding your application for "${applicant.businessName}".`,
+            link: { view: 'profile', applicantId: applicant.id },
+            type: 'message'
+        });
+    }
+
 
     const updateApplicantState = (prev: Applicant | null): Applicant | null => {
       if (!prev) return null;
@@ -214,9 +325,11 @@ const App: React.FC = () => {
     }
   };
 
+  const userNotifications = notifications.filter(n => n.userId === currentUser.id);
+
   return (
     <AuthContext.Provider value={authContextValue}>
-      <div className="flex h-screen bg-gray-100 text-gray-900">
+      <div className="flex h-screen bg-slate-50 text-slate-800">
         {isSidebarOpen && (
             <div 
                 onClick={() => setSidebarOpen(false)} 
@@ -232,6 +345,10 @@ const App: React.FC = () => {
             searchTerm={searchTerm}
             onSearchChange={setSearchTerm}
             onNavigate={handleNavigate}
+            notifications={userNotifications}
+            onMarkAsRead={markNotificationAsRead}
+            onMarkAllAsRead={markAllNotificationsAsRead}
+            onNavigateToNotificationLink={handleNavigateToNotificationLink}
           />
           <main className="p-4 sm:p-6 overflow-y-auto">
             {renderContent()}

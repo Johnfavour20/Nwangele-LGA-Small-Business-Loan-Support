@@ -26,7 +26,7 @@ const NavItem: React.FC<{
         onClick();
       }}
       className={`flex items-center p-3 my-1 rounded-lg text-white transition-colors duration-200 ${
-        isActive ? 'bg-green-700 font-semibold' : 'hover:bg-green-800 dark:hover:bg-gray-700'
+        isActive ? 'bg-green-700 font-semibold' : 'hover:bg-green-800'
       }`}
     >
       {icon}
@@ -69,8 +69,8 @@ export const Sidebar: React.FC<SidebarProps> = ({ currentView, onNavigate, isOpe
   const navItems = getNavItems();
 
   return (
-    <aside className={`fixed top-0 left-0 h-full bg-green-900 dark:bg-gray-900 text-white flex flex-col z-30 transition-all duration-300 w-64 ${isOpen ? 'translate-x-0' : '-translate-x-full'} lg:translate-x-0 ${isOpen ? 'lg:w-64' : 'lg:w-20'}`}>
-      <div className={`flex items-center justify-center p-4 border-b border-green-800 dark:border-gray-700 transition-all duration-300 ${isOpen ? 'h-20' : 'h-20'}`}>
+    <aside className={`fixed top-0 left-0 h-full bg-green-900 text-white flex flex-col z-30 transition-all duration-300 w-64 ${isOpen ? 'translate-x-0' : '-translate-x-full'} lg:translate-x-0 ${isOpen ? 'lg:w-64' : 'lg:w-20'}`}>
+      <div className={`flex items-center justify-center p-4 border-b border-green-800 transition-all duration-300 ${isOpen ? 'h-20' : 'h-20'}`}>
         <div className="flex items-center gap-2">
             <ImoStateSeal />
             <NigeriaFlag />
@@ -93,7 +93,7 @@ export const Sidebar: React.FC<SidebarProps> = ({ currentView, onNavigate, isOpe
         </ul>
       </nav>
 
-      <div className="p-4 border-t border-green-800 dark:border-gray-700">
+      <div className="p-4 border-t border-green-800">
         <ul>
            {userRole === UserRole.Admin && <NavItem icon={ICONS.settings} label="Settings" isActive={currentView === 'settings'} onClick={() => onNavigate('settings')} isExpanded={isOpen} />}
            {userRole === UserRole.Applicant && <NavItem icon={ICONS.profile} label="My Profile" isActive={currentView === 'my-profile'} onClick={() => onNavigate('my-profile')} isExpanded={isOpen} />}

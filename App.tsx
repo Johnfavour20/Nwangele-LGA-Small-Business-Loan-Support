@@ -45,15 +45,6 @@ interface AuthContextType {
 const AuthContext = createContext<AuthContextType | null>(null);
 export const useAuth = () => useContext(AuthContext)!;
 
-type Theme = 'light' | 'dark';
-interface ThemeContextType {
-  theme: Theme;
-  toggleTheme: () => void;
-}
-
-const ThemeContext = createContext<ThemeContextType | null>(null);
-export const useTheme = () => useContext(ThemeContext)!;
-
 const App: React.FC = () => {
   const [currentUser, setCurrentUser] = useState<User | null>(null);
   const [currentView, setCurrentView] = useState<View>('dashboard');
@@ -63,23 +54,13 @@ const App: React.FC = () => {
   const [users, setUsers] = useState<User[]>(USERS_DATA);
   const [applicants, setApplicants] = useState<Applicant[]>(APPLICANTS_DATA);
   const [toast, setToast] = useState<ToastState>(null);
-  const [theme, setTheme] = useState<Theme>(() => (localStorage.getItem('theme') as Theme) || 'light');
 
   useEffect(() => {
     if (window.innerWidth >= 1024) {
       setSidebarOpen(true);
     }
   }, []);
-
-  useEffect(() => {
-    document.documentElement.classList.toggle('dark', theme === 'dark');
-    localStorage.setItem('theme', theme);
-  }, [theme]);
   
-  const toggleTheme = () => {
-    setTheme(prevTheme => prevTheme === 'light' ? 'dark' : 'light');
-  };
-
   const login = (email: string, password: string): boolean => {
     const user = users.find(u => u.email === email);
     // In a real app, password would be hashed and checked on the backend
@@ -154,7 +135,6 @@ const App: React.FC = () => {
   };
 
   const authContextValue = useMemo(() => ({ currentUser, login, logout }), [currentUser]);
-  const themeContextValue = useMemo(() => ({ theme, toggleTheme }), [theme]);
 
   if (!currentUser) {
     return (
@@ -183,8 +163,7 @@ const App: React.FC = () => {
 
   return (
     <AuthContext.Provider value={authContextValue}>
-    <ThemeContext.Provider value={themeContextValue}>
-      <div className="flex h-screen bg-slate-50 dark:bg-gray-900 text-gray-900 dark:text-gray-100">
+      <div className="flex h-screen bg-slate-50 text-slate-900">
         {isSidebarOpen && (
             <div 
                 onClick={() => setSidebarOpen(false)} 
@@ -206,7 +185,6 @@ const App: React.FC = () => {
         </div>
         {toast && <Toast message={toast.message} type={toast.type} onClose={() => setToast(null)} />}
       </div>
-    </ThemeContext.Provider>
     </AuthContext.Provider>
   );
 };

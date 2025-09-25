@@ -38,7 +38,7 @@ export const LoanStatusPieChart: React.FC<PieChartProps> = ({ data }) => {
           formatter={(value) => `${value} applications`} 
           contentStyle={{ 
             backgroundColor: '#ffffff',
-            borderColor: '#e5e7eb',
+            borderColor: '#e2e8f0',
             borderRadius: '0.75rem'
           }}
         />

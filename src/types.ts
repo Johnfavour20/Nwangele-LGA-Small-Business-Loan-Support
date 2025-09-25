@@ -64,3 +64,17 @@ export interface GeminiAnalysis {
   risks: string[];
   riskLevel: 'Low' | 'Medium' | 'High';
 }
+
+export interface Notification {
+  id: string;
+  userId: string; // The user who should receive the notification
+  title: string;
+  message: string;
+  timestamp: string;
+  isRead: boolean;
+  link?: {
+    view: 'profile';
+    applicantId: string;
+  };
+  type: 'message' | 'status_update' | 'new_application';
+}

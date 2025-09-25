@@ -34,8 +34,8 @@ export const Login: React.FC<LoginProps> = ({ onSwitchToRegister }) => {
     }
 
     return (
-        <div className="min-h-screen bg-gray-100 dark:bg-gray-900 flex items-center justify-center">
-            <div className="w-full max-w-4xl bg-white dark:bg-gray-800 rounded-2xl shadow-2xl flex overflow-hidden">
+        <div className="min-h-screen bg-slate-100 flex items-center justify-center">
+            <div className="w-full max-w-4xl bg-white rounded-2xl shadow-2xl flex overflow-hidden">
                 {/* Left Panel */}
                 <div className="w-1/2 bg-green-800 text-white p-12 hidden md:flex flex-col justify-between" style={{ backgroundImage: 'linear-gradient(to bottom, rgba(4, 120, 87, 0.8), rgba(5, 150, 105, 0.9)), url(https://picsum.photos/seed/nigeria/800/1200)', backgroundSize: 'cover' }}>
                     <div>
@@ -50,28 +50,28 @@ export const Login: React.FC<LoginProps> = ({ onSwitchToRegister }) => {
 
                 {/* Right Panel */}
                 <div className="w-full md:w-1/2 p-8 sm:p-12">
-                    <h2 className="text-3xl font-bold text-gray-800 dark:text-gray-100 mb-2">Welcome Back</h2>
-                    <p className="text-gray-600 dark:text-gray-300 mb-6">Sign in to access the portal.</p>
+                    <h2 className="text-3xl font-bold text-slate-800 mb-2">Welcome Back</h2>
+                    <p className="text-slate-600 mb-6">Sign in to access the portal.</p>
                     
                     <form onSubmit={handleLogin} className="space-y-5">
                         <div>
-                            <label className="font-semibold text-gray-700 dark:text-gray-300 block mb-1">Email Address</label>
+                            <label className="font-semibold text-slate-700 block mb-1">Email Address</label>
                             <input
                                 type="email"
                                 value={email}
                                 onChange={(e) => setEmail(e.target.value)}
-                                className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500"
+                                className="w-full px-4 py-2 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500"
                                 placeholder="name@nwangele.gov.ng"
                                 required
                             />
                         </div>
                         <div>
-                            <label className="font-semibold text-gray-700 dark:text-gray-300 block mb-1">Password</label>
+                            <label className="font-semibold text-slate-700 block mb-1">Password</label>
                             <input
                                 type="password"
                                 value={password}
                                 onChange={(e) => setPassword(e.target.value)}
-                                className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500"
+                                className="w-full px-4 py-2 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500"
                                 placeholder="••••••••"
                                 required
                             />
@@ -83,18 +83,18 @@ export const Login: React.FC<LoginProps> = ({ onSwitchToRegister }) => {
                     </form>
                     
                     <div className="mt-6">
-                        <p className="text-center text-sm font-semibold text-gray-500 dark:text-gray-400 mb-3">Quick Access (Demo)</p>
+                        <p className="text-center text-sm font-semibold text-slate-500 mb-3">Quick Access (Demo)</p>
                         <div className="flex flex-col sm:flex-row gap-2">
                            {demoCreds.map(cred => (
-                             <button key={cred.role} onClick={() => handleDemoClick(cred.user, cred.pass)} className="flex-1 text-center py-2 px-2 text-xs font-semibold rounded-md bg-gray-200 dark:bg-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-300 dark:hover:bg-gray-600 transition">
+                             <button key={cred.role} onClick={() => handleDemoClick(cred.user, cred.pass)} className="flex-1 text-center py-2 px-2 text-xs font-semibold rounded-md bg-slate-200 text-slate-700 hover:bg-slate-300 transition">
                                  Login as {cred.role}
                              </button>
                            ))}
                         </div>
                     </div>
 
-                    <p className="text-center text-sm text-gray-600 dark:text-gray-400 mt-8">
-                        Don't have an account? <a href="#" onClick={(e) => { e.preventDefault(); onSwitchToRegister(); }} className="font-semibold text-green-700 dark:text-green-400 hover:underline">Register Here</a>
+                    <p className="text-center text-sm text-slate-600 mt-8">
+                        Don't have an account? <a href="#" onClick={(e) => { e.preventDefault(); onSwitchToRegister(); }} className="font-semibold text-green-700 hover:underline">Register Here</a>
                     </p>
                 </div>
             </div>

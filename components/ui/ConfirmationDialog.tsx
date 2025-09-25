@@ -22,19 +22,19 @@ export const ConfirmationDialog: React.FC<ConfirmationDialogProps> = ({ isOpen, 
       onClick={onClose}
     >
       <div 
-        className="bg-white dark:bg-gray-800 rounded-xl shadow-2xl p-6 sm:p-8 w-full max-w-md m-4 transform transition-all animate-fade-in"
+        className="bg-white rounded-xl shadow-2xl p-6 sm:p-8 w-full max-w-md m-4 transform transition-all animate-fade-in"
         onClick={(e) => e.stopPropagation()}
       >
         <div className="sm:flex sm:items-start">
-          <div className="mx-auto flex-shrink-0 flex items-center justify-center h-12 w-12 rounded-full bg-red-100 dark:bg-red-900/50 sm:mx-0 sm:h-10 sm:w-10">
-            <span className="text-red-600 dark:text-red-400 h-6 w-6">{ICONS.warning}</span>
+          <div className="mx-auto flex-shrink-0 flex items-center justify-center h-12 w-12 rounded-full bg-red-100 sm:mx-0 sm:h-10 sm:w-10">
+            <span className="text-red-600 h-6 w-6">{ICONS.warning}</span>
           </div>
           <div className="mt-3 text-center sm:mt-0 sm:ml-4 sm:text-left">
-            <h3 className="text-lg leading-6 font-bold text-gray-900 dark:text-gray-100" id="modal-title">
+            <h3 className="text-lg leading-6 font-bold text-slate-900" id="modal-title">
               {title}
             </h3>
             <div className="mt-2">
-              <p className="text-sm text-gray-600 dark:text-gray-400">
+              <p className="text-sm text-slate-600">
                 {message}
               </p>
             </div>

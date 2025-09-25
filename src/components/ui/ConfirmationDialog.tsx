@@ -30,11 +30,11 @@ export const ConfirmationDialog: React.FC<ConfirmationDialogProps> = ({ isOpen, 
             <span className="text-red-600 h-6 w-6">{ICONS.warning}</span>
           </div>
           <div className="mt-3 text-center sm:mt-0 sm:ml-4 sm:text-left">
-            <h3 className="text-lg leading-6 font-bold text-gray-900" id="modal-title">
+            <h3 className="text-lg leading-6 font-bold text-slate-900" id="modal-title">
               {title}
             </h3>
             <div className="mt-2">
-              <p className="text-sm text-gray-600">
+              <p className="text-sm text-slate-600">
                 {message}
               </p>
             </div>

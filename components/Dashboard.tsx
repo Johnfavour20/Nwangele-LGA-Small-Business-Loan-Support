@@ -58,43 +58,43 @@ const AdminDashboard: React.FC<Omit<DashboardProps, 'onStartNewApplication'>> = 
             </div>
 
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-                <div className="lg:col-span-2 bg-white dark:bg-gray-800 p-4 sm:p-6 rounded-xl shadow-md border border-slate-200 dark:border-gray-700">
-                    <h3 className="text-xl font-bold mb-4 text-gray-700 dark:text-gray-200">Applications by Sector</h3>
+                <div className="lg:col-span-2 bg-white p-4 sm:p-6 rounded-xl shadow-md border border-slate-200">
+                    <h3 className="text-xl font-bold mb-4 text-slate-700">Applications by Sector</h3>
                     <div className="h-80">
                       <ApplicationsBarChart data={barChartData} />
                     </div>
                 </div>
-                <div className="bg-white dark:bg-gray-800 p-4 sm:p-6 rounded-xl shadow-md border border-slate-200 dark:border-gray-700">
-                    <h3 className="text-xl font-bold mb-4 text-gray-700 dark:text-gray-200">Loan Status Overview</h3>
+                <div className="bg-white p-4 sm:p-6 rounded-xl shadow-md border border-slate-200">
+                    <h3 className="text-xl font-bold mb-4 text-slate-700">Loan Status Overview</h3>
                      <div className="h-80">
                       <LoanStatusPieChart data={pieChartData} />
                     </div>
                 </div>
             </div>
 
-             <div className="bg-white dark:bg-gray-800 p-4 sm:p-6 rounded-xl shadow-md border border-slate-200 dark:border-gray-700">
-                <h3 className="text-xl font-bold mb-4 text-gray-700 dark:text-gray-200">Recent Applications</h3>
-                <p className="text-gray-500 dark:text-gray-400 text-sm mb-4">Showing the 5 most recent applications across the entire system. {searchTerm && `Filtered by "${searchTerm}".`}</p>
+             <div className="bg-white p-4 sm:p-6 rounded-xl shadow-md border border-slate-200">
+                <h3 className="text-xl font-bold mb-4 text-slate-700">Recent Applications</h3>
+                <p className="text-slate-500 text-sm mb-4">Showing the 5 most recent applications across the entire system. {searchTerm && `Filtered by "${searchTerm}".`}</p>
                 <div className="overflow-x-auto">
                     <table className="w-full text-left">
                         <thead>
-                            <tr className="border-b border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-700/50">
-                                <th className="p-3 font-semibold text-gray-600 dark:text-gray-300">Applicant Name</th>
-                                <th className="p-3 font-semibold text-gray-600 dark:text-gray-300">Business Name</th>
-                                <th className="p-3 font-semibold text-gray-600 dark:text-gray-300">Amount</th>
-                                <th className="p-3 font-semibold text-gray-600 dark:text-gray-300">Date</th>
-                                <th className="p-3 font-semibold text-gray-600 dark:text-gray-300">Status</th>
-                                <th className="p-3 font-semibold text-gray-600 dark:text-gray-300">Action</th>
+                            <tr className="border-b border-slate-200 bg-slate-50">
+                                <th className="p-3 font-semibold text-slate-600">Applicant Name</th>
+                                <th className="p-3 font-semibold text-slate-600">Business Name</th>
+                                <th className="p-3 font-semibold text-slate-600">Amount</th>
+                                <th className="p-3 font-semibold text-slate-600">Date</th>
+                                <th className="p-3 font-semibold text-slate-600">Status</th>
+                                <th className="p-3 font-semibold text-slate-600">Action</th>
                             </tr>
                         </thead>
                         <tbody>
                             {filteredRecentApplications.length > 0 ? (
                                 filteredRecentApplications.map(app => (
-                                    <tr key={app.id} className="border-b border-gray-200 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-700">
+                                    <tr key={app.id} className="border-b border-slate-200 hover:bg-slate-50">
                                         <td className="p-3">{app.name}</td>
-                                        <td className="p-3 text-gray-600 dark:text-gray-400">{app.businessName}</td>
+                                        <td className="p-3 text-slate-600">{app.businessName}</td>
                                         <td className="p-3 font-medium">₦{app.loanAmount.toLocaleString()}</td>
-                                        <td className="p-3 text-gray-600 dark:text-gray-400">{app.applicationDate}</td>
+                                        <td className="p-3 text-slate-600">{app.applicationDate}</td>
                                         <td className="p-3"><Badge status={app.status} /></td>
                                         <td className="p-3">
                                             <button onClick={() => onViewProfile(app)} className="text-green-600 hover:text-green-500 font-semibold flex items-center">
@@ -105,7 +105,7 @@ const AdminDashboard: React.FC<Omit<DashboardProps, 'onStartNewApplication'>> = 
                                 ))
                             ) : (
                                 <tr>
-                                    <td colSpan={6} className="text-center p-8 text-gray-500 dark:text-gray-400">
+                                    <td colSpan={6} className="text-center p-8 text-slate-500">
                                         No recent applications found for "{searchTerm}".
                                     </td>
                                 </tr>
@@ -132,49 +132,49 @@ const ApplicantDashboard: React.FC<DashboardProps> = ({ onViewProfile, onStartNe
 
     return (
         <div className="space-y-6">
-            <div className="bg-white dark:bg-gray-800 p-4 sm:p-6 rounded-xl shadow-md border border-slate-200 dark:border-gray-700">
-                <h2 className="text-2xl font-bold text-gray-800 dark:text-gray-100">Welcome, {currentUser?.name}!</h2>
-                <p className="text-gray-600 dark:text-gray-300">Here's a summary of your loan applications and profile status.</p>
+            <div className="bg-white p-4 sm:p-6 rounded-xl shadow-md border border-slate-200">
+                <h2 className="text-2xl font-bold text-slate-800">Welcome, {currentUser?.name}!</h2>
+                <p className="text-slate-600">Here's a summary of your loan applications and profile status.</p>
             </div>
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
                  <Card title="Pending Applications" value={pendingCount.toString()} trend={`${myApps.length} total apps`} />
                  <Card title="Active Loan" value={activeLoan ? `₦${activeLoan.loanAmount.toLocaleString()}`: 'None'} trend={activeLoan?.status || 'No active loan'} />
-                 <div className="bg-white dark:bg-gray-800 p-4 sm:p-6 rounded-xl shadow-md border border-slate-200 dark:border-gray-700">
-                     <h4 className="text-gray-500 dark:text-gray-400 font-medium">Profile Completion</h4>
-                     <div className="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-2.5 my-3">
+                 <div className="bg-white p-4 sm:p-6 rounded-xl shadow-md border border-slate-200">
+                     <h4 className="text-slate-500 font-medium">Profile Completion</h4>
+                     <div className="w-full bg-slate-200 rounded-full h-2.5 my-3">
                         <div className="bg-green-600 h-2.5 rounded-full" style={{width: `${profileCompletion}%`}}></div>
                     </div>
-                     <p className="text-sm font-semibold text-green-600 dark:text-green-400">{profileCompletion}% Complete</p>
+                     <p className="text-sm font-semibold text-green-600">{profileCompletion}% Complete</p>
                  </div>
             </div>
-            <div className="bg-white dark:bg-gray-800 p-4 sm:p-6 rounded-xl shadow-md border border-slate-200 dark:border-gray-700">
+            <div className="bg-white p-4 sm:p-6 rounded-xl shadow-md border border-slate-200">
                  <div className="flex justify-between items-center mb-4">
-                    <h3 className="text-xl font-bold text-gray-700 dark:text-gray-200">My Applications</h3>
+                    <h3 className="text-xl font-bold text-slate-700">My Applications</h3>
                     <Button onClick={onStartNewApplication}>+ Start New Application</Button>
                 </div>
                  <div className="overflow-x-auto">
                     <table className="w-full text-left">
                         <thead>
-                            <tr className="border-b dark:border-gray-700 bg-gray-50 dark:bg-gray-700/50">
-                                <th className="p-3 font-semibold text-gray-600 dark:text-gray-300">Application ID</th>
-                                <th className="p-3 font-semibold text-gray-600 dark:text-gray-300">Business Name</th>
-                                <th className="p-3 font-semibold text-gray-600 dark:text-gray-300">Amount</th>
-                                <th className="p-3 font-semibold text-gray-600 dark:text-gray-300">Date</th>
-                                <th className="p-3 font-semibold text-gray-600 dark:text-gray-300">Status</th>
-                                <th className="p-3 font-semibold text-gray-600 dark:text-gray-300">Action</th>
+                            <tr className="border-b bg-slate-50">
+                                <th className="p-3 font-semibold text-slate-600">Application ID</th>
+                                <th className="p-3 font-semibold text-slate-600">Business Name</th>
+                                <th className="p-3 font-semibold text-slate-600">Amount</th>
+                                <th className="p-3 font-semibold text-slate-600">Date</th>
+                                <th className="p-3 font-semibold text-slate-600">Status</th>
+                                <th className="p-3 font-semibold text-slate-600">Action</th>
                             </tr>
                         </thead>
                         <tbody>
                              {filteredMyApps.length > 0 ? (
                                 filteredMyApps.map(app => (
-                                    <tr key={app.id} className="border-b dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-700">
+                                    <tr key={app.id} className="border-b hover:bg-slate-50">
                                         <td className="p-3 font-mono text-sm">{app.id}</td>
-                                        <td className="p-3 text-gray-600 dark:text-gray-400">{app.businessName}</td>
+                                        <td className="p-3 text-slate-600">{app.businessName}</td>
                                         <td className="p-3 font-medium">₦{app.loanAmount.toLocaleString()}</td>
-                                        <td className="p-3 text-gray-600 dark:text-gray-400">{app.applicationDate}</td>
+                                        <td className="p-3 text-slate-600">{app.applicationDate}</td>
                                         <td className="p-3"><Badge status={app.status} /></td>
                                         <td className="p-3">
-                                            <button onClick={() => onViewProfile(app)} className="text-green-600 dark:text-green-400 hover:text-green-500 font-semibold">
+                                            <button onClick={() => onViewProfile(app)} className="text-green-600 hover:text-green-500 font-semibold">
                                                 View Details
                                             </button>
                                         </td>
@@ -182,7 +182,7 @@ const ApplicantDashboard: React.FC<DashboardProps> = ({ onViewProfile, onStartNe
                                 ))
                              ) : (
                                 <tr>
-                                    <td colSpan={6} className="text-center p-8 text-gray-500 dark:text-gray-400">
+                                    <td colSpan={6} className="text-center p-8 text-slate-500">
                                        No applications found for "{searchTerm}".
                                     </td>
                                 </tr>

@@ -26,7 +26,7 @@ const NavItem: React.FC<{
         onClick();
       }}
       className={`flex items-center p-3 my-1 rounded-lg transition-colors duration-200 ${
-        isActive ? 'bg-green-100 text-green-800 font-semibold' : 'text-gray-600 hover:bg-gray-100'
+        isActive ? 'bg-green-100 text-green-800 font-semibold' : 'text-slate-600 hover:bg-slate-100'
       } ${!isExpanded ? 'justify-center' : ''}`}
     >
       {icon}
@@ -71,8 +71,8 @@ export const Sidebar: React.FC<SidebarProps> = ({ currentView, onNavigate, isOpe
   const navItems = getNavItems();
 
   return (
-    <aside className={`fixed top-0 left-0 h-full bg-white text-gray-700 border-r border-gray-200 flex flex-col z-30 transition-all duration-300 w-64 ${isOpen ? 'translate-x-0' : '-translate-x-full'} lg:translate-x-0 ${isOpen ? 'lg:w-64' : 'lg:w-20'}`}>
-      <div className={`flex items-center p-4 border-b border-gray-200 transition-all duration-300 h-20 ${isOpen ? 'justify-start' : 'justify-center'}`}>
+    <aside className={`fixed top-0 left-0 h-full bg-white text-slate-700 border-r border-slate-200 flex flex-col z-30 transition-all duration-300 w-64 ${isOpen ? 'translate-x-0' : '-translate-x-full'} lg:translate-x-0 ${isOpen ? 'lg:w-64' : 'lg:w-20'}`}>
+      <div className={`flex items-center p-4 border-b border-slate-200 transition-all duration-300 h-20 ${isOpen ? 'justify-start' : 'justify-center'}`}>
         <div className="flex items-center gap-2">
             <ImoStateSeal />
             <NigeriaFlag />
@@ -95,7 +95,7 @@ export const Sidebar: React.FC<SidebarProps> = ({ currentView, onNavigate, isOpe
         </ul>
       </nav>
 
-      <div className="p-2 border-t border-gray-200">
+      <div className="p-2 border-t border-slate-200">
         <ul>
            {userRole === UserRole.Admin && <NavItem icon={ICONS.settings} label="Settings" isActive={currentView === 'settings'} onClick={() => onNavigate('settings')} isExpanded={isOpen} />}
            {userRole === UserRole.Applicant && <NavItem icon={ICONS.profile} label="My Profile" isActive={currentView === 'my-profile'} onClick={() => onNavigate('my-profile')} isExpanded={isOpen} />}

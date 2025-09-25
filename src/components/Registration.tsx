@@ -1,3 +1,4 @@
+
 import React, { useState } from 'react';
 import { NigeriaFlag, ImoStateSeal, LGA_WARDS } from '../constants';
 import { Button } from './ui/Button';
@@ -41,7 +42,7 @@ export const Registration: React.FC<RegistrationProps> = ({ onSwitchToLogin }) =
     };
 
     return (
-        <div className="min-h-screen bg-gray-100 flex items-center justify-center">
+        <div className="min-h-screen bg-slate-100 flex items-center justify-center p-4">
             <div className="w-full max-w-4xl bg-white rounded-2xl shadow-2xl flex overflow-hidden">
                 {/* Left Panel */}
                 <div className="w-1/2 bg-green-800 text-white p-12 hidden md:flex flex-col justify-between" style={{ backgroundImage: 'linear-gradient(to bottom, rgba(4, 120, 87, 0.8), rgba(5, 150, 105, 0.9)), url(https://picsum.photos/seed/farm/800/1200)', backgroundSize: 'cover' }}>
@@ -56,41 +57,41 @@ export const Registration: React.FC<RegistrationProps> = ({ onSwitchToLogin }) =
                 </div>
 
                 {/* Right Panel */}
-                <div className="w-full md:w-1/2 p-8 sm:p-12 overflow-y-auto" style={{maxHeight: '100vh'}}>
-                    <h2 className="text-3xl font-bold text-gray-800 mb-2">Create an Account</h2>
-                    <p className="text-gray-600 mb-6">Get started with your application today.</p>
+                <div className="w-full md:w-1/2 p-8 sm:p-12 md:max-h-[90vh] overflow-y-auto">
+                    <h2 className="text-3xl font-bold text-slate-800 mb-2">Create an Account</h2>
+                    <p className="text-slate-600 mb-6">Get started with your application today.</p>
                     
                     <form onSubmit={handleRegister} className="space-y-4">
                         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                             <div>
-                                <label className="font-semibold text-gray-700 block mb-1">Full Name</label>
-                                <input type="text" name="name" value={formData.name} onChange={handleChange} className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500" placeholder="e.g., Adaobi Ekwueme" required />
+                                <label className="font-semibold text-slate-700 block mb-1">Full Name</label>
+                                <input type="text" name="name" value={formData.name} onChange={handleChange} className="w-full px-4 py-2 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500" placeholder="e.g., Adaobi Ekwueme" required />
                             </div>
                             <div>
-                                <label className="font-semibold text-gray-700 block mb-1">Email Address</label>
-                                <input type="email" name="email" value={formData.email} onChange={handleChange} className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500" placeholder="you@example.com" required />
+                                <label className="font-semibold text-slate-700 block mb-1">Email Address</label>
+                                <input type="email" name="email" value={formData.email} onChange={handleChange} className="w-full px-4 py-2 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500" placeholder="you@example.com" required />
                             </div>
                         </div>
                          <div>
-                            <label className="font-semibold text-gray-700 block mb-1">Ward</label>
-                             <select name="ward" value={formData.ward} onChange={handleChange} className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500 bg-white">
+                            <label className="font-semibold text-slate-700 block mb-1">Ward</label>
+                             <select name="ward" value={formData.ward} onChange={handleChange} className="w-full px-4 py-2 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500 bg-white">
                                 {LGA_WARDS.map(ward => <option key={ward} value={ward}>{ward}</option>)}
                              </select>
                         </div>
                          <div>
-                            <label className="font-semibold text-gray-700 block mb-1">
-                                NIN or BVN <span className="text-xs font-normal text-gray-500">(Optional)</span>
+                            <label className="font-semibold text-slate-700 block mb-1">
+                                NIN or BVN <span className="text-xs font-normal text-slate-500">(Optional)</span>
                             </label>
-                            <input type="text" name="nin" value={formData.nin} onChange={handleChange} className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500" placeholder="11-digit number" />
+                            <input type="text" name="nin" value={formData.nin} onChange={handleChange} className="w-full px-4 py-2 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500" placeholder="11-digit number" />
                         </div>
                         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                             <div>
-                                <label className="font-semibold text-gray-700 block mb-1">Password</label>
-                                <input type="password" name="password" value={formData.password} onChange={handleChange} className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500" placeholder="••••••••" required />
+                                <label className="font-semibold text-slate-700 block mb-1">Password</label>
+                                <input type="password" name="password" value={formData.password} onChange={handleChange} className="w-full px-4 py-2 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500" placeholder="••••••••" required />
                             </div>
                             <div>
-                                <label className="font-semibold text-gray-700 block mb-1">Confirm Password</label>
-                                <input type="password" name="confirmPassword" value={formData.confirmPassword} onChange={handleChange} className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500" placeholder="••••••••" required />
+                                <label className="font-semibold text-slate-700 block mb-1">Confirm Password</label>
+                                <input type="password" name="confirmPassword" value={formData.confirmPassword} onChange={handleChange} className="w-full px-4 py-2 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500" placeholder="••••••••" required />
                             </div>
                         </div>
                         
@@ -99,7 +100,7 @@ export const Registration: React.FC<RegistrationProps> = ({ onSwitchToLogin }) =
                         <Button type="submit" className="w-full py-3 mt-2">Create Account</Button>
                     </form>
                     
-                    <p className="text-center text-sm text-gray-600 mt-8">
+                    <p className="text-center text-sm text-slate-600 mt-8">
                         Already have an account? <a href="#" onClick={(e) => { e.preventDefault(); onSwitchToLogin(); }} className="font-semibold text-green-700 hover:underline">Login Here</a>
                     </p>
                 </div>

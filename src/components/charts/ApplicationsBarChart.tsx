@@ -6,8 +6,8 @@ interface BarChartProps {
 }
 
 export const ApplicationsBarChart: React.FC<BarChartProps> = ({ data }) => {
-  const tickColor = '#4b5563'; // gray-600
-  const gridColor = '#e5e7eb'; // gray-200
+  const tickColor = '#475569'; // slate-600
+  const gridColor = '#e2e8f0'; // slate-200
 
   return (
     <ResponsiveContainer width="100%" height="100%">
@@ -27,7 +27,7 @@ export const ApplicationsBarChart: React.FC<BarChartProps> = ({ data }) => {
             cursor={{fill: 'rgba(110, 231, 183, 0.1)'}} 
             contentStyle={{ 
                 backgroundColor: '#ffffff',
-                borderColor: '#e5e7eb',
+                borderColor: '#e2e8f0',
                 borderRadius: '0.75rem'
             }}
         />

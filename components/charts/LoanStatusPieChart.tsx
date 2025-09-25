@@ -1,7 +1,8 @@
 import React from 'react';
 import { ResponsiveContainer, PieChart, Pie, Cell, Tooltip, Legend } from 'recharts';
 import { LoanStatus } from '../../types';
-import { useTheme } from '../../App';
+// FIX: Removed unused useTheme import which was causing an error.
+// import { useTheme } from '../../App';
 
 interface PieChartProps {
   data: { name: string; value: number }[];
@@ -16,8 +17,7 @@ const COLORS: Record<LoanStatus, string> = {
 };
 
 export const LoanStatusPieChart: React.FC<PieChartProps> = ({ data }) => {
-  const { theme } = useTheme();
-  const legendColor = theme === 'dark' ? '#d1d5db' : '#374151'; // gray-300 vs gray-700
+  const legendColor = '#374151'; // slate-700
 
   return (
     <ResponsiveContainer width="100%" height="100%">
@@ -39,8 +39,8 @@ export const LoanStatusPieChart: React.FC<PieChartProps> = ({ data }) => {
         <Tooltip 
           formatter={(value) => `${value} applications`} 
           contentStyle={{ 
-            backgroundColor: theme === 'dark' ? '#1f2937' : '#ffffff',
-            borderColor: theme === 'dark' ? '#4b5563' : '#e5e7eb',
+            backgroundColor: '#ffffff',
+            borderColor: '#e2e8f0',
             borderRadius: '0.75rem'
           }}
         />

@@ -1,15 +1,16 @@
 import React from 'react';
 import { ResponsiveContainer, LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend } from 'recharts';
-import { useTheme } from '../../App';
+// FIX: Removed useTheme import as it is not exported from App.tsx and the app has no theme context.
+// import { useTheme } from '../../App';
 
 interface ChartProps {
   data: { name: string; applications: number }[];
 }
 
 export const MonthlyTrendChart: React.FC<ChartProps> = ({ data }) => {
-  const { theme } = useTheme();
-  const tickColor = theme === 'dark' ? '#9ca3af' : '#4b5563';
-  const gridColor = theme === 'dark' ? '#374151' : '#e5e7eb';
+  // FIX: Removed theme logic and hardcoded light theme colors.
+  const tickColor = '#4b5563';
+  const gridColor = '#e5e7eb';
   const lineColor = '#059669'; // green-700
 
   return (
@@ -23,8 +24,9 @@ export const MonthlyTrendChart: React.FC<ChartProps> = ({ data }) => {
         <YAxis allowDecimals={false} tick={{ fontSize: 12, fill: tickColor }} />
         <Tooltip
             contentStyle={{ 
-                backgroundColor: theme === 'dark' ? '#1f2937' : '#ffffff',
-                borderColor: theme === 'dark' ? '#4b5563' : '#e5e7eb',
+                // FIX: Hardcoded light theme colors.
+                backgroundColor: '#ffffff',
+                borderColor: '#e5e7eb',
                 borderRadius: '0.75rem'
             }}
         />
