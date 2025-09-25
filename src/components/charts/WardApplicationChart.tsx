@@ -1,15 +1,13 @@
 import React from 'react';
 import { ResponsiveContainer, BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip } from 'recharts';
-import { useTheme } from '../../App';
 
 interface ChartProps {
   data: { name: string; applications: number }[];
 }
 
 export const WardApplicationChart: React.FC<ChartProps> = ({ data }) => {
-  const { theme } = useTheme();
-  const tickColor = theme === 'dark' ? '#9ca3af' : '#4b5563';
-  const gridColor = theme === 'dark' ? '#374151' : '#e5e7eb';
+  const tickColor = '#4b5563';
+  const gridColor = '#e5e7eb';
 
   return (
     <ResponsiveContainer width="100%" height="100%">
@@ -24,8 +22,8 @@ export const WardApplicationChart: React.FC<ChartProps> = ({ data }) => {
         <Tooltip 
             cursor={{fill: 'rgba(16, 185, 129, 0.1)'}} 
             contentStyle={{ 
-                backgroundColor: theme === 'dark' ? '#1f2937' : '#ffffff',
-                borderColor: theme === 'dark' ? '#4b5563' : '#e5e7eb',
+                backgroundColor: '#ffffff',
+                borderColor: '#e5e7eb',
                 borderRadius: '0.75rem'
             }}
         />

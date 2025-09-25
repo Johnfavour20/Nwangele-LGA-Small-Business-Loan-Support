@@ -18,8 +18,8 @@ interface ApplicantProfileProps {
 
 const ProfileDetail: React.FC<{ label: string; value: React.ReactNode; className?: string }> = ({ label, value, className }) => (
   <div className={className}>
-    <p className="text-sm text-gray-500 dark:text-gray-400">{label}</p>
-    <p className="font-semibold text-gray-800 dark:text-gray-200">{value}</p>
+    <p className="text-sm text-gray-500">{label}</p>
+    <p className="font-semibold text-gray-800">{value}</p>
   </div>
 );
 
@@ -28,8 +28,8 @@ const TabButton: React.FC<{ label: string, isActive: boolean, onClick: () => voi
         onClick={onClick}
         className={`px-4 py-2 text-sm font-semibold rounded-t-lg border-b-2 transition-colors duration-200 focus:outline-none ${
             isActive
-                ? 'border-green-600 text-green-600 dark:text-green-400'
-                : 'border-transparent text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200'
+                ? 'border-green-600 text-green-600'
+                : 'border-transparent text-gray-500 hover:text-gray-700'
         }`}
     >
         {label}
@@ -56,17 +56,17 @@ const BankDetailsForm: React.FC<{ applicant: Applicant; onUpdate: (details: Part
         <form onSubmit={handleSubmit} className="space-y-4">
              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div>
-                    <label htmlFor="bankName" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Bank Name</label>
-                    <input type="text" id="bankName" value={bankName} onChange={e => setBankName(e.target.value)} className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500" required />
+                    <label htmlFor="bankName" className="block text-sm font-medium text-gray-700 mb-1">Bank Name</label>
+                    <input type="text" id="bankName" value={bankName} onChange={e => setBankName(e.target.value)} className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500" required />
                 </div>
                 <div>
-                    <label htmlFor="accountName" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Account Name</label>
-                    <input type="text" id="accountName" value={accountName} onChange={e => setAccountName(e.target.value)} className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500" required />
+                    <label htmlFor="accountName" className="block text-sm font-medium text-gray-700 mb-1">Account Name</label>
+                    <input type="text" id="accountName" value={accountName} onChange={e => setAccountName(e.target.value)} className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500" required />
                 </div>
             </div>
             <div>
-                <label htmlFor="accountNumber" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Account Number</label>
-                <input type="text" id="accountNumber" value={accountNumber} onChange={e => setAccountNumber(e.target.value)} className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500" placeholder="10-digit number" required />
+                <label htmlFor="accountNumber" className="block text-sm font-medium text-gray-700 mb-1">Account Number</label>
+                <input type="text" id="accountNumber" value={accountNumber} onChange={e => setAccountNumber(e.target.value)} className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500" placeholder="10-digit number" required />
             </div>
             {error && <p className="text-sm text-red-500">{error}</p>}
             <div className="text-right">
@@ -77,8 +77,8 @@ const BankDetailsForm: React.FC<{ applicant: Applicant; onUpdate: (details: Part
 };
 
 const ChecklistItem: React.FC<{ text: string; isChecked: boolean; }> = ({ text, isChecked }) => (
-    <li className={`flex items-center text-sm ${isChecked ? 'text-gray-800 dark:text-gray-200' : 'text-gray-500 dark:text-gray-400'}`}>
-        <span className={`mr-3 flex h-5 w-5 items-center justify-center rounded-full ${isChecked ? 'bg-green-600' : 'bg-gray-300 dark:bg-gray-600'}`}>
+    <li className={`flex items-center text-sm ${isChecked ? 'text-gray-800' : 'text-gray-500'}`}>
+        <span className={`mr-3 flex h-5 w-5 items-center justify-center rounded-full ${isChecked ? 'bg-green-600' : 'bg-gray-300'}`}>
             {isChecked && <svg className="h-3 w-3 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M5 13l4 4L19 7" /></svg>}
         </span>
         {text}
@@ -125,17 +125,17 @@ export const ApplicantProfile: React.FC<ApplicantProfileProps> = ({ applicant, o
         <div className="space-y-6 animate-fade-in">
             <Button onClick={onBack} variant="outline">← Back to List</Button>
 
-            <div className="bg-white dark:bg-gray-800 p-4 sm:p-6 rounded-xl shadow-md border border-slate-200 dark:border-gray-700">
+            <div className="bg-white p-4 sm:p-6 rounded-xl shadow-md border border-slate-200">
                 <div className="flex flex-col sm:flex-row justify-between items-start gap-4">
                     <div>
-                        <h2 className="text-3xl font-bold text-gray-800 dark:text-gray-100">{applicant.name}</h2>
-                        <p className="text-lg text-gray-600 dark:text-gray-300 mt-1">{applicant.businessName}</p>
+                        <h2 className="text-3xl font-bold text-gray-800">{applicant.name}</h2>
+                        <p className="text-lg text-gray-600 mt-1">{applicant.businessName}</p>
                     </div>
                     <div className="flex-shrink-0">
                         <Badge status={applicant.status} />
                     </div>
                 </div>
-                <div className="mt-6 grid grid-cols-2 md:grid-cols-4 gap-6 border-t border-slate-200 dark:border-gray-700 pt-6">
+                <div className="mt-6 grid grid-cols-2 md:grid-cols-4 gap-6 border-t border-slate-200 pt-6">
                     <ProfileDetail label="Loan Amount" value={`₦${applicant.loanAmount.toLocaleString()}`} />
                     <ProfileDetail label="Business Sector" value={applicant.sector} />
                     <ProfileDetail label="Application Date" value={applicant.applicationDate} />
@@ -143,7 +143,7 @@ export const ApplicantProfile: React.FC<ApplicantProfileProps> = ({ applicant, o
                 </div>
             </div>
 
-            <div className="border-b border-gray-200 dark:border-gray-700">
+            <div className="border-b border-gray-200">
                 <TabButton label="Application Details" isActive={activeTab === 'details'} onClick={() => setActiveTab('details')} />
                 {canMessage && <TabButton label="Messages" isActive={activeTab === 'messages'} onClick={() => setActiveTab('messages')} />}
                 <TabButton label="Verification & Payout" isActive={activeTab === 'payout'} onClick={() => setActiveTab('payout')} />
@@ -163,21 +163,21 @@ export const ApplicantProfile: React.FC<ApplicantProfileProps> = ({ applicant, o
                             {applicant.documents.length > 0 ? (
                                 <ul className="space-y-2">
                                     {applicant.documents.map(doc => (
-                                        <li key={doc.name} className="flex items-center text-green-700 dark:text-green-400">
+                                        <li key={doc.name} className="flex items-center text-green-700">
                                             <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 mr-2" viewBox="0 0 20 20" fill="currentColor"><path fillRule="evenodd" d="M4 4a2 2 0 012-2h4.586A2 2 0 0112 2.586L15.414 6A2 2 0 0116 7.414V16a2 2 0 01-2 2H6a2 2 0 01-2-2V4zm2 6a1 1 0 011-1h6a1 1 0 110 2H7a1 1 0 01-1-1zm1 3a1 1 0 100 2h6a1 1 0 100-2H7z" clipRule="evenodd" /></svg>
                                             <a href={doc.url} target="_blank" rel="noopener noreferrer" className="hover:underline">{doc.name}</a>
                                         </li>
                                     ))}
                                 </ul>
                             ) : (
-                                <p className="text-gray-500 dark:text-gray-400">No documents were uploaded.</p>
+                                <p className="text-gray-500">No documents were uploaded.</p>
                             )}
                         </CollapsibleSection>
                     </div>
 
                     {isActionable && (
-                        <div className="bg-white dark:bg-gray-800 p-4 sm:p-6 rounded-xl shadow-md border border-slate-200 dark:border-gray-700">
-                            <h3 className="text-xl font-bold mb-4 text-gray-700 dark:text-gray-200 flex items-center gap-2">
+                        <div className="bg-white p-4 sm:p-6 rounded-xl shadow-md border border-slate-200">
+                            <h3 className="text-xl font-bold mb-4 text-gray-700 flex items-center gap-2">
                                 <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 text-green-600" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z" /></svg>
                                 AI-Powered Analysis
                             </h3>
@@ -185,25 +185,25 @@ export const ApplicantProfile: React.FC<ApplicantProfileProps> = ({ applicant, o
                             {error && <div className="text-center p-8 text-red-500"><p>{error}</p></div>}
                             {!isLoading && !error && analysis && (
                                 <div className="space-y-4 text-sm">
-                                    <div><p className="font-semibold text-gray-600 dark:text-gray-300 mb-1">Risk Assessment: <span className={`font-bold ${analysis.riskLevel === 'Low' ? 'text-green-500' : analysis.riskLevel === 'Medium' ? 'text-yellow-500' : 'text-red-500'}`}>{analysis.riskLevel}</span></p></div>
-                                    <div><p className="font-semibold text-gray-600 dark:text-gray-300 mb-1">Summary:</p><p className="text-gray-500 dark:text-gray-400">{analysis.summary}</p></div>
+                                    <div><p className="font-semibold text-gray-600 mb-1">Risk Assessment: <span className={`font-bold ${analysis.riskLevel === 'Low' ? 'text-green-500' : analysis.riskLevel === 'Medium' ? 'text-yellow-500' : 'text-red-500'}`}>{analysis.riskLevel}</span></p></div>
+                                    <div><p className="font-semibold text-gray-600 mb-1">Summary:</p><p className="text-gray-500">{analysis.summary}</p></div>
                                     <div>
-                                        <p className="font-semibold text-gray-600 dark:text-gray-300 mb-2">Strengths:</p>
-                                        <ul className="list-disc list-inside space-y-1 text-green-700 dark:text-green-400">
+                                        <p className="font-semibold text-gray-600 mb-2">Strengths:</p>
+                                        <ul className="list-disc list-inside space-y-1 text-green-700">
                                             {analysis.strengths.map((s, i) => <li key={i}>{s}</li>)}
                                         </ul>
                                     </div>
                                     <div>
-                                        <p className="font-semibold text-gray-600 dark:text-gray-300 mb-2">Risks / Concerns:</p>
-                                        <ul className="list-disc list-inside space-y-1 text-red-700 dark:text-red-400">
+                                        <p className="font-semibold text-gray-600 mb-2">Risks / Concerns:</p>
+                                        <ul className="list-disc list-inside space-y-1 text-red-700">
                                             {analysis.risks.map((r, i) => <li key={i}>{r}</li>)}
                                         </ul>
                                     </div>
                                 </div>
                             )}
-                            <div className="mt-6 pt-6 border-t dark:border-gray-700 flex gap-4">
+                            <div className="mt-6 pt-6 border-t flex gap-4">
                                 <Button onClick={handleApprove} disabled={applicant.status !== LoanStatus.Pending}>Approve</Button>
-                                <Button onClick={handleReject} variant="outline" className="!border-red-500 !text-red-500 hover:!bg-red-50 dark:hover:!bg-red-900/20" disabled={applicant.status !== LoanStatus.Pending}>Reject</Button>
+                                <Button onClick={handleReject} variant="outline" className="!border-red-500 !text-red-500 hover:!bg-red-50" disabled={applicant.status !== LoanStatus.Pending}>Reject</Button>
                             </div>
                         </div>
                     )}
@@ -212,8 +212,8 @@ export const ApplicantProfile: React.FC<ApplicantProfileProps> = ({ applicant, o
             
             {activeTab === 'payout' && (
                 <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 animate-fade-in">
-                    <div className="bg-white dark:bg-gray-800 p-4 sm:p-6 rounded-xl shadow-md border border-slate-200 dark:border-gray-700">
-                         <h3 className="text-xl font-bold mb-4 text-gray-700 dark:text-gray-200">Bank Account Details</h3>
+                    <div className="bg-white p-4 sm:p-6 rounded-xl shadow-md border border-slate-200">
+                         <h3 className="text-xl font-bold mb-4 text-gray-700">Bank Account Details</h3>
                          {currentUser?.role === UserRole.Applicant ? (
                              <>
                                 {applicant.accountNumber ? (
@@ -221,11 +221,11 @@ export const ApplicantProfile: React.FC<ApplicantProfileProps> = ({ applicant, o
                                         <ProfileDetail label="Bank Name" value={applicant.bankName} />
                                         <ProfileDetail label="Account Name" value={applicant.accountName} />
                                         <ProfileDetail label="Account Number" value={maskedAccountNumber} />
-                                        <p className="text-xs text-gray-500 dark:text-gray-400 pt-2 border-t dark:border-gray-700">For security, your full account number is hidden. Contact support if you need to change these details.</p>
+                                        <p className="text-xs text-gray-500 pt-2 border-t">For security, your full account number is hidden. Contact support if you need to change these details.</p>
                                     </div>
                                 ) : (
                                     <>
-                                        <p className="text-sm text-gray-600 dark:text-gray-400 mb-4">Please provide your bank account details for loan disbursement.</p>
+                                        <p className="text-sm text-gray-600 mb-4">Please provide your bank account details for loan disbursement.</p>
                                         <BankDetailsForm applicant={applicant} onUpdate={(details) => onUpdateApplicantDetails(applicant.id, details)} />
                                     </>
                                 )}
@@ -239,14 +239,14 @@ export const ApplicantProfile: React.FC<ApplicantProfileProps> = ({ applicant, o
                                         <ProfileDetail label="Account Number" value={applicant.accountNumber} />
                                     </div>
                                 ) : (
-                                    <p className="text-gray-500 dark:text-gray-400">Applicant has not provided their bank details yet.</p>
+                                    <p className="text-gray-500">Applicant has not provided their bank details yet.</p>
                                 )}
                              </>
                          )}
                     </div>
                      {isActionable && (
-                        <div className="bg-white dark:bg-gray-800 p-4 sm:p-6 rounded-xl shadow-md border border-slate-200 dark:border-gray-700">
-                            <h3 className="text-xl font-bold mb-4 text-gray-700 dark:text-gray-200">Verification Checklist</h3>
+                        <div className="bg-white p-4 sm:p-6 rounded-xl shadow-md border border-slate-200">
+                            <h3 className="text-xl font-bold mb-4 text-gray-700">Verification Checklist</h3>
                             <ul className="space-y-3">
                                <ChecklistItem text="Identity Verified (NIN)" isChecked={!!currentUser?.nin} />
                                <ChecklistItem text="Documents Reviewed" isChecked={applicant.documents.length > 0} />
@@ -258,7 +258,7 @@ export const ApplicantProfile: React.FC<ApplicantProfileProps> = ({ applicant, o
             )}
 
             {activeTab === 'messages' && canMessage && currentUser && (
-                <div className="bg-white dark:bg-gray-800 rounded-xl shadow-md border border-slate-200 dark:border-gray-700 animate-fade-in">
+                <div className="bg-white rounded-xl shadow-md border border-slate-200 animate-fade-in">
                    <Messaging 
                      messages={applicant.messages || []}
                      currentUser={currentUser}
