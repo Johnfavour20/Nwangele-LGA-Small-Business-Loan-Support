@@ -237,7 +237,7 @@ const App: React.FC = () => {
   return (
     <AuthContext.Provider value={authContextValue}>
     <ThemeContext.Provider value={themeContextValue}>
-      <div className="flex h-screen bg-slate-50 dark:bg-gray-900 text-gray-900 dark:text-gray-100">
+      <div className="flex h-screen bg-gray-100 dark:bg-black text-gray-900 dark:text-gray-100">
         {isSidebarOpen && (
             <div 
                 onClick={() => setSidebarOpen(false)} 

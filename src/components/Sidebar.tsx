@@ -25,25 +25,13 @@ const NavItem: React.FC<{
         e.preventDefault();
         onClick();
       }}
-      className={`flex items-center p-3 my-1 rounded-lg transition-colors duration-200 group ${
-        isActive
-          ? 'bg-green-100 dark:bg-green-900/50 font-semibold'
-          : 'hover:bg-gray-100 dark:hover:bg-gray-800'
+      className={`flex items-center p-3 my-1 rounded-lg text-white transition-colors duration-200 ${
+        isActive ? 'bg-green-700 dark:bg-gray-700 font-semibold' : 'hover:bg-green-800 dark:hover:bg-gray-700'
       } ${!isExpanded ? 'justify-center' : ''}`}
     >
-       <span className={
-        isActive
-          ? 'text-green-700 dark:text-green-400'
-          : 'text-gray-500 dark:text-gray-400 group-hover:text-gray-700 dark:group-hover:text-gray-300'
-      }>
-        {icon}
-      </span>
+      {icon}
       <span
-        className={`ml-4 whitespace-nowrap transition-all duration-200 ${
-          isActive
-            ? 'text-green-800 dark:text-green-300'
-            : 'text-gray-700 dark:text-gray-300'
-        } ${isExpanded ? 'opacity-100' : 'opacity-0 w-0'}`}
+        className={`ml-4 whitespace-nowrap transition-all duration-200 ${isExpanded ? 'opacity-100' : 'opacity-0 w-0'}`}
       >
         {label}
       </span>
@@ -83,13 +71,13 @@ export const Sidebar: React.FC<SidebarProps> = ({ currentView, onNavigate, isOpe
   const navItems = getNavItems();
 
   return (
-    <aside className={`fixed top-0 left-0 h-full bg-white dark:bg-gray-900 border-r border-gray-200 dark:border-gray-800 flex flex-col z-30 transition-all duration-300 w-64 ${isOpen ? 'translate-x-0' : '-translate-x-full'} lg:translate-x-0 ${isOpen ? 'lg:w-64' : 'lg:w-20'}`}>
-      <div className={`flex items-center p-4 border-b border-gray-200 dark:border-gray-700 transition-all duration-300 h-20 ${isOpen ? 'justify-start' : 'justify-center'}`}>
+    <aside className={`fixed top-0 left-0 h-full bg-green-900 dark:bg-gray-900 text-white flex flex-col z-30 transition-all duration-300 w-64 ${isOpen ? 'translate-x-0' : '-translate-x-full'} lg:translate-x-0 ${isOpen ? 'lg:w-64' : 'lg:w-20'}`}>
+      <div className={`flex items-center p-4 border-b border-green-800 dark:border-gray-800 transition-all duration-300 h-20 ${isOpen ? 'justify-start' : 'justify-center'}`}>
         <div className="flex items-center gap-2">
             <ImoStateSeal />
             <NigeriaFlag />
         </div>
-        {isOpen && <h1 className="text-xl font-bold ml-2 whitespace-nowrap text-gray-800 dark:text-white">LGA LOANS</h1>}
+        {isOpen && <h1 className="text-xl font-bold ml-2 whitespace-nowrap text-white">LGA LOANS</h1>}
       </div>
 
       <nav className="flex-1 p-2">
@@ -107,7 +95,7 @@ export const Sidebar: React.FC<SidebarProps> = ({ currentView, onNavigate, isOpe
         </ul>
       </nav>
 
-      <div className="p-2 border-t border-gray-200 dark:border-gray-700">
+      <div className="p-2 border-t border-green-800 dark:border-gray-800">
         <ul>
            {userRole === UserRole.Admin && <NavItem icon={ICONS.settings} label="Settings" isActive={currentView === 'settings'} onClick={() => onNavigate('settings')} isExpanded={isOpen} />}
            {userRole === UserRole.Applicant && <NavItem icon={ICONS.profile} label="My Profile" isActive={currentView === 'my-profile'} onClick={() => onNavigate('my-profile')} isExpanded={isOpen} />}
