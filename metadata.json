@@ -1,5 +1,7 @@
 {
   "name": "LGA Small Business Loan Support System",
   "description": "A comprehensive database management system for small business loan support in Nwangele LGA, Imo State, Nigeria. Features an AI-powered risk assessment tool to aid decision-making.",
-  "requestFramePermissions": []
+  "requestFramePermissions": [
+    "camera"
+  ]
 }

@@ -46,7 +46,7 @@ export const Applications: React.FC<ApplicationsProps> = ({ applicants, onViewPr
   const colSpan = isApplicantView ? 6 : 7;
 
   return (
-    <div className="bg-white dark:bg-gray-800 p-4 sm:p-6 rounded-xl shadow-md border border-slate-200 dark:border-gray-700">
+    <div className="bg-white dark:bg-gray-800 p-4 sm:p-6 rounded-xl shadow-md border border-slate-200 dark:border-gray-700 animate-fade-in">
       <div className="flex justify-between items-center mb-6">
         <div>
             <h2 className="text-2xl font-bold text-gray-800 dark:text-gray-100">{isApplicantView ? 'My Loan Applications' : 'All Loan Applications'}</h2>

@@ -35,65 +35,66 @@ The entire application is built with a **mobile-first, fully responsive design**
 - **Verification & Payout Management:** A dedicated tab to review applicant documents, verify details, and manage the disbursement process.
 - **User Management (Admin Only):** Admins can add, edit, and manage user accounts and roles within the system.
 
-## 3. Responsive Design Showcase
-
-The application adapts beautifully to different screen sizes.
-
-| Desktop View | Tablet View | Mobile View |
-| :---: | :---: | :---: |
-| ![Desktop View](https://picsum.photos/seed/desktop/800/600) | ![Tablet View](https://picsum.photos/seed/tablet/800/600) | ![Mobile View](https://picsum.photos/seed/mobile/800/600) |
-
-
-## 4. Technology Stack
+## 3. Technology Stack
 
 ### Frontend
-- **Framework:** React 19 with TypeScript
+- **Framework:** React 18 with TypeScript & Vite
 - **Styling:** Tailwind CSS for a utility-first, responsive, and modern design system.
 - **State Management:** React Context API for authentication, theme, and global state.
 - **Data Visualization:** Recharts for interactive and beautiful charts.
-- **AI Integration (Mocked):** A simulated service (`geminiService.ts`) demonstrates the workflow for calling an AI model like Google Gemini.
+- **AI Integration:** The frontend is connected to the Google Gemini API for risk assessment.
 
-### Backend (Conceptual)
-The frontend is designed to work with a robust backend service.
-- **Framework:** Python (Flask)
-- **Database:** PostgreSQL
-- **ORM:** SQLAlchemy
-- **AI Integration:** Google Gemini API via the `@google/genai` SDK.
-- **Containerization:** Docker & Docker Compose for consistent development and deployment environments.
-
-## 5. Getting Started (Frontend)
+## 4. Getting Started
 
 To run the frontend of this application locally, follow these steps.
 
 ### Prerequisites
-- A modern web browser like Chrome, Firefox, or Safari.
-- A simple local web server.
+- [Node.js](https://nodejs.org/) (version 18 or higher recommended)
+- [npm](https://www.npmjs.com/) or [yarn](https://yarnpkg.com/)
 
 ### Installation & Setup
-1.  **Download the project files:**
-    Unzip the project files into a folder on your computer.
+1.  **Clone the repository:**
+    ```bash
+    git clone <repository-url>
+    cd <repository-directory>
+    ```
 
-2.  **No Installation Needed:**
-    This project uses CDN-hosted dependencies via an `importmap` in `index.html`, so no `npm install` is required. All necessary libraries (React, Recharts, Tailwind CSS) are loaded directly in the browser.
+2.  **Install dependencies:**
+    Navigate to the project's root directory (where `package.json` is located) and run:
+    ```bash
+    npm install
+    ```
 
-3.  **Run the application:**
-    Since there's no build step, you must serve the project directory with a static server to handle ES module imports correctly. Opening `index.html` directly from the filesystem will not work.
-    
-    **Option A: Using VS Code's Live Server Extension**
-    - Install the "Live Server" extension from the VS Code Marketplace.
-    - Right-click on the `index.html` file in the explorer and select "Open with Live Server".
+3.  **Create an environment file:**
+    Create a file named `.env` in the root of your project and add your Google Gemini API key:
+    ```
+    VITE_API_KEY=YOUR_GEMINI_API_KEY_HERE
+    ```
 
-    **Option B: Using `serve` (Requires Node.js)**
-    - Open your terminal in the project's root directory.
-    - Install `serve` globally if you don't have it:
-      ```bash
-      npm install -g serve
-      ```
-    - Run the server:
-      ```bash
-      serve
-      ```
-    The application will be available at a local URL like `http://localhost:3000`.
+4.  **Run the development server:**
+    Once installation is complete, start the Vite development server:
+    ```bash
+    npm run dev
+    ```
+The application will be available at a local URL, typically `http://localhost:5173`.
+
+## 5. Deployment on Vercel
+
+This Vite project is configured for easy deployment on Vercel.
+
+1.  **Push to a Git Provider:** Make sure your code is on GitHub, GitLab, or Bitbucket.
+2.  **Import Project in Vercel:**
+    - Log in to your Vercel account and click "Add New... > Project".
+    - Select your Git repository.
+3.  **Configure Project:**
+    - Vercel should automatically detect that you are using **Vite** and configure the build settings correctly.
+    - **Framework Preset:** `Vite`
+    - **Build Command:** `vite build` (or `npm run build`)
+    - **Output Directory:** `dist`
+4.  **Add Environment Variable:**
+    - In the Vercel project settings, go to "Environment Variables".
+    - Add a variable named `VITE_API_KEY` and paste your Google Gemini API key as the value.
+5.  **Deploy:** Click the "Deploy" button. Vercel will build and deploy your application.
 
 ## 6. Authentication & Demo Credentials
 The application features a role-based access control system. For demonstration purposes, you can log in using the following credentials on the login screen:
