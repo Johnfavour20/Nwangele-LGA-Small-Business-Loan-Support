@@ -19,8 +19,8 @@ import { Toast } from './components/ui/Toast';
 const USERS_DATA: User[] = [
     { id: 'user-1', name: 'Admin User', email: 'admin@nwangele.gov.ng', role: UserRole.Admin, ward: 'Amuzi' },
     { id: 'user-2', name: 'Loan Officer', email: 'officer@officer.nwangele.gov.ng', role: UserRole.Officer, ward: 'Abajah' },
-    { id: 'user-3', name: 'Adaobi Ekwueme', email: 'user@email.com', role: UserRole.Applicant, ward: 'Isu', nin: '12345678901', profilePictureUrl: 'https://randomuser.me/api/portraits/women/68.jpg' },
-    { id: 'user-4', name: 'Buchi Chukwu', email: 'buchi@email.com', role: UserRole.Applicant, ward: 'Umuozu' },
+    { id: 'user-3', name: 'Adaobi Ekwueme', email: 'user@email.com', role: UserRole.Applicant, ward: 'Isu', nin: '12345678901', profilePictureUrl: 'https://randomuser.me/api/portraits/women/68.jpg', isBvnVerified: true },
+    { id: 'user-4', name: 'Buchi Chukwu', email: 'buchi@email.com', role: UserRole.Applicant, ward: 'Umuozu', isBvnVerified: false },
     { id: 'user-5', name: 'Chinedu Eze', email: 'chinedu@email.com', role: UserRole.Applicant, ward: 'Dim-Na-Nume' },
 ];
 
@@ -231,11 +231,13 @@ const App: React.FC = () => {
 
 
   const renderContent = () => {
+    const selectedApplicantUser = users.find(u => u.id === selectedApplicant?.userId);
+
     switch (currentView) {
       case 'dashboard': return <Dashboard applicants={applicants} onViewProfile={handleViewProfile} onStartNewApplication={() => setCurrentView('new-application')} searchTerm={searchTerm} />;
       case 'applications': return <Applications applicants={applicants} onViewProfile={handleViewProfile} onStartNewApplication={() => setCurrentView('new-application')} searchTerm={searchTerm} />;
       case 'users': return <Users users={users} />;
-      case 'profile': return selectedApplicant && <ApplicantProfile applicant={selectedApplicant} onBack={handleBackToList} onUpdateStatus={handleUpdateStatus} onUpdateApplicantDetails={handleUpdateApplicantDetails} onSendMessage={handleSendMessage} />;
+      case 'profile': return selectedApplicant && <ApplicantProfile applicant={selectedApplicant} user={selectedApplicantUser} onBack={handleBackToList} onUpdateStatus={handleUpdateStatus} onUpdateApplicantDetails={handleUpdateApplicantDetails} onSendMessage={handleSendMessage} />;
       case 'new-application': return <NewApplicationForm onSubmit={handleNewApplicationSubmit} onCancel={() => setCurrentView('applications')} />;
       case 'reports': return <Reports applicants={applicants} users={users} />;
       case 'settings': return <Settings user={currentUser} onUpdateUser={handleUpdateUser} />;

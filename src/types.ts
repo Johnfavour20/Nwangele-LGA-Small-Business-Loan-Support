@@ -65,6 +65,12 @@ export interface GeminiAnalysis {
   riskLevel: 'Low' | 'Medium' | 'High';
 }
 
+export interface GroundedAnalysis {
+  text: string;
+  sources: { uri: string; title: string }[];
+}
+
+
 export interface Notification {
   id: string;
   userId: string; // The user who should receive the notification

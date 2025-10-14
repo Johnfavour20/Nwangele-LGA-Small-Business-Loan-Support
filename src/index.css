@@ -10,11 +10,11 @@
   }
 
   .responsive-table tr {
-    @apply block border border-slate-200 rounded-lg mb-4;
+    @apply block border border-slate-200 dark:border-slate-700 rounded-lg mb-4;
   }
   
   .responsive-table td {
-    @apply block border-b border-slate-100 p-4 text-left;
+    @apply block border-b border-slate-100 dark:border-slate-700/50 p-4 text-left;
   }
 
   .responsive-table tr td:last-child {
@@ -23,7 +23,7 @@
 
   .responsive-table td:before {
     content: attr(data-label);
-    @apply block font-semibold text-slate-500 text-xs mb-1 uppercase tracking-wider;
+    @apply block font-semibold text-slate-500 dark:text-slate-400 text-xs mb-1 uppercase tracking-wider;
   }
 
   /* Make actions align to the right and hide their label */

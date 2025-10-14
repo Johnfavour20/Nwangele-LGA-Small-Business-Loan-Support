@@ -1,6 +1,7 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { ICONS } from '../constants';
-import { useAuth, View } from '../App';
+import { useAuth } from '../App';
+import type { View } from '../App';
 import { ThemeToggle } from './ui/ThemeToggle';
 import type { Notification } from '../types';
 import { NotificationPanel } from './ui/NotificationPanel';

@@ -25,8 +25,9 @@ export const Reports: React.FC<ReportsProps> = ({ applicants, users }) => {
     const repaymentRate = totalDisbursedAmount > 0 ? (totalRepaidAmount / totalDisbursedAmount) * 100 : 0;
     
     const userWardMap = new Map(users.map(u => [u.id, u.ward]));
-    // Fix: Using a generic argument for `reduce` to ensure correct type inference for the accumulator.
-    const applicationsByWard = applicants.reduce<Record<string, number>>((acc, app) => {
+    
+    // FIX: Explicitly type the accumulator's initial value to ensure type safety.
+    const applicationsByWard = applicants.reduce((acc: Record<string, number>, app) => {
         const ward = userWardMap.get(app.userId) || 'Unknown';
         acc[ward] = (acc[ward] || 0) + 1;
         return acc;
@@ -34,14 +35,18 @@ export const Reports: React.FC<ReportsProps> = ({ applicants, users }) => {
 
     const wardChartData = Object.entries(applicationsByWard).map(([name, applications]) => ({ name, applications }));
 
-    // Fix: Using a generic argument for `reduce` to ensure correct type inference for the accumulator.
-    const applicationsByMonth = applicants.reduce<Record<string, number>>((acc, app) => {
+    // FIX: Explicitly type the accumulator's initial value to ensure type safety.
+    const applicationsByMonth = applicants.reduce((acc: Record<string, number>, app) => {
         const month = new Date(app.applicationDate).toLocaleString('default', { month: 'short', year: '2-digit' });
         acc[month] = (acc[month] || 0) + 1;
         return acc;
     }, {});
     
-    const sortedMonths = Object.keys(applicationsByMonth).sort((a, b) => new Date(`1 ${a}`) > new Date(`1 ${b}`) ? 1 : -1);
+    const sortedMonths = Object.keys(applicationsByMonth).sort((a, b) => {
+        const dateA = new Date(`01 ${a.replace("'", " 20")}`);
+        const dateB = new Date(`01 ${b.replace("'", " 20")}`);
+        return dateA.getTime() - dateB.getTime();
+    });
 
     const monthChartData = sortedMonths.map(month => ({
         name: month,

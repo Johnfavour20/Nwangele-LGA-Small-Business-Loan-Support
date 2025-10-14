@@ -1,17 +1,19 @@
 import React, { useState, useEffect } from 'react';
-import type { Applicant, GeminiAnalysis } from '../types';
+import type { Applicant, GeminiAnalysis, User, GroundedAnalysis } from '../types';
 import { LoanStatus, UserRole } from '../types';
 import { useAuth } from '../App';
-import { analyzeApplication } from '../services/geminiService';
+import { analyzeApplication, analyzeApplicationWithSearch } from '../services/geminiService';
 import { Badge } from './ui/Badge';
 import { Button } from './ui/Button';
 import { Messaging } from './Messaging';
 import { ConfirmationDialog } from './ui/ConfirmationDialog';
 import { Spinner } from './ui/Spinner';
 import { CollapsibleSection } from './ui/CollapsibleSection';
+import { ICONS } from '../constants';
 
 interface ApplicantProfileProps {
   applicant: Applicant;
+  user?: User;
   onBack: () => void;
   onUpdateStatus: (applicantId: string, newStatus: LoanStatus) => void;
   onUpdateApplicantDetails: (applicantId: string, details: Partial<Applicant>) => void;
@@ -89,7 +91,7 @@ const ChecklistItem: React.FC<{ text: string; isChecked: boolean; }> = ({ text, 
     </li>
 );
 
-export const ApplicantProfile: React.FC<ApplicantProfileProps> = ({ applicant, onBack, onUpdateStatus, onUpdateApplicantDetails, onSendMessage }) => {
+export const ApplicantProfile: React.FC<ApplicantProfileProps> = ({ applicant, user, onBack, onUpdateStatus, onUpdateApplicantDetails, onSendMessage }) => {
     const { currentUser } = useAuth();
     const [analysis, setAnalysis] = useState<GeminiAnalysis | null>(null);
     const [isLoadingAnalysis, setIsLoadingAnalysis] = useState(true);
@@ -97,6 +99,9 @@ export const ApplicantProfile: React.FC<ApplicantProfileProps> = ({ applicant, o
     const [activeTab, setActiveTab] = useState('details');
     const [isConfirmOpen, setConfirmOpen] = useState(false);
     const [actionToConfirm, setActionToConfirm] = useState<{ type: 'approve' | 'reject' } | null>(null);
+    const [groundedAnalysis, setGroundedAnalysis] = useState<GroundedAnalysis | null>(null);
+    const [isGroundedLoading, setIsGroundedLoading] = useState(false);
+    const [groundedError, setGroundedError] = useState<string | null>(null);
     
     const isActionable = currentUser?.role === UserRole.Admin || currentUser?.role === UserRole.Officer;
 
@@ -120,6 +125,19 @@ export const ApplicantProfile: React.FC<ApplicantProfileProps> = ({ applicant, o
 
         fetchAnalysis();
     }, [applicant, isActionable]);
+
+    const handleGroundedAnalysis = async () => {
+        setIsGroundedLoading(true);
+        setGroundedError(null);
+        try {
+            const result = await analyzeApplicationWithSearch(applicant);
+            setGroundedAnalysis(result);
+        } catch (err) {
+            setGroundedError(err instanceof Error ? err.message : 'Failed to load grounded analysis.');
+        } finally {
+            setIsGroundedLoading(false);
+        }
+    };
 
     const handleConfirmAction = () => {
         if (actionToConfirm?.type === 'approve') {
@@ -216,6 +234,34 @@ export const ApplicantProfile: React.FC<ApplicantProfileProps> = ({ applicant, o
                                             {analysis.risks.map((r, i) => <li key={i}>{r}</li>)}
                                         </ul>
                                     </div>
+                                    <div className="pt-4 mt-4 border-t dark:border-slate-700">
+                                        <Button onClick={handleGroundedAnalysis} variant="outline" size="sm" isLoading={isGroundedLoading} className="w-full">
+                                            Analyze with Google Search
+                                        </Button>
+                                    </div>
+                                    {isGroundedLoading && <div className="text-center p-4 flex justify-center items-center"><Spinner /></div>}
+                                    {groundedError && <div className="text-center p-4 text-red-500"><p>{groundedError}</p></div>}
+                                    {groundedAnalysis && (
+                                        <div className="mt-4 space-y-3 text-sm animate-fade-in">
+                                            <p className="font-semibold text-slate-600 dark:text-slate-300">Grounded Analysis Summary:</p>
+                                            <p className="text-slate-500 dark:text-slate-400 whitespace-pre-wrap">{groundedAnalysis.text}</p>
+                                            {groundedAnalysis.sources.length > 0 && (
+                                                 <div>
+                                                    <p className="font-semibold text-slate-600 dark:text-slate-300 mb-2">Sources:</p>
+                                                    <ul className="space-y-1 text-blue-600 dark:text-blue-400">
+                                                        {groundedAnalysis.sources.map((source, i) => (
+                                                            <li key={i} className="flex items-center gap-2">
+                                                                <span className="w-4 h-4 text-slate-500">{ICONS.link}</span>
+                                                                <a href={source.uri} target="_blank" rel="noopener noreferrer" className="truncate hover:underline text-xs" title={source.uri}>
+                                                                    {source.title}
+                                                                </a>
+                                                            </li>
+                                                        ))}
+                                                    </ul>
+                                                 </div>
+                                            )}
+                                        </div>
+                                    )}
                                 </div>
                             )}
                             <div className="mt-6 pt-6 border-t dark:border-slate-700 flex gap-4">
@@ -265,7 +311,8 @@ export const ApplicantProfile: React.FC<ApplicantProfileProps> = ({ applicant, o
                         <div className="bg-white dark:bg-slate-800 p-4 sm:p-6 rounded-xl shadow-md border border-slate-200 dark:border-slate-700">
                             <h3 className="text-xl font-bold mb-4 text-slate-700 dark:text-slate-200">Verification Checklist</h3>
                             <ul className="space-y-3">
-                               <ChecklistItem text="Identity Verified (NIN)" isChecked={!!currentUser?.nin} />
+                               <ChecklistItem text="Identity Verified (NIN)" isChecked={!!user?.nin} />
+                               <ChecklistItem text="Identity Verified (BVN)" isChecked={!!user?.isBvnVerified} />
                                <ChecklistItem text="Documents Reviewed" isChecked={applicant.documents.length > 0} />
                                <ChecklistItem text="Bank Account Details Provided" isChecked={!!applicant.accountNumber} />
                             </ul>

@@ -1,5 +1,5 @@
-import { GoogleGenAI, Type } from "@google/genai";
-import type { Applicant, GeminiAnalysis } from '../types';
+import { GoogleGenAI, Type, GenerateContentResponse } from "@google/genai";
+import type { Applicant, GeminiAnalysis, GroundedAnalysis } from '../types';
 
 // The API key is obtained exclusively from the pre-configured environment variable.
 const API_KEY = process.env.API_KEY;
@@ -88,4 +88,48 @@ export const analyzeApplication = async (applicant: Applicant): Promise<GeminiAn
     }
     throw new Error("Failed to get analysis from the AI service. Please try again later.");
   }
+};
+
+export const analyzeApplicationWithSearch = async (applicant: Applicant): Promise<GroundedAnalysis> => {
+    console.log('Calling Gemini API with Google Search for applicant:', applicant.id);
+
+    const prompt = `
+        Using Google Search to get up-to-date information, provide an enhanced analysis of this small business loan application from Nwangele LGA, Imo State, Nigeria.
+        
+        Business Name: ${applicant.businessName}
+        Business Sector: ${applicant.sector}
+        
+        Look for any online presence, recent news related to the business or its sector in Nigeria, and general market sentiment. 
+        Provide a concise summary of your findings.
+    `;
+
+    try {
+        const response: GenerateContentResponse = await ai.models.generateContent({
+            model: "gemini-2.5-flash",
+            contents: prompt,
+            config: {
+                tools: [{googleSearch: {}}],
+            },
+        });
+
+        const text = response.text;
+        const groundingChunks = response.candidates?.[0]?.groundingMetadata?.groundingChunks || [];
+        
+        // FIX: Refactored to be more type-safe by filtering for valid web chunks before mapping.
+        const sources = groundingChunks
+            .filter((chunk: any): chunk is { web: { uri: string; title?: string } } => chunk.web && chunk.web.uri)
+            .map(chunk => ({
+                uri: chunk.web.uri,
+                title: chunk.web.title || 'Unknown Source'
+            }));
+
+        // Deduplicate sources based on URI
+        const uniqueSources = Array.from(new Map(sources.map(item => [item.uri, item])).values());
+
+        return { text, sources: uniqueSources };
+
+    } catch (error) {
+        console.error("Error calling Gemini API with search grounding:", error);
+        throw new Error("Failed to get grounded analysis from the AI service.");
+    }
 };

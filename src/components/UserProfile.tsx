@@ -18,6 +18,7 @@ export const UserProfile: React.FC<UserProfileProps> = ({ user, onUpdateUser }) 
   });
   const [profilePicture, setProfilePicture] = useState<string | null>(user.profilePictureUrl || null);
   const [isImageModalOpen, setImageModalOpen] = useState(false);
+  const [isBvnVerifying, setIsBvnVerifying] = useState(false);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -35,8 +36,17 @@ export const UserProfile: React.FC<UserProfileProps> = ({ user, onUpdateUser }) 
     e.preventDefault();
     onUpdateUser({ ...user, ...formData, profilePictureUrl: profilePicture || undefined });
   };
+  
+  const handleBvnVerification = () => {
+      setIsBvnVerifying(true);
+      // Simulate API call
+      setTimeout(() => {
+          onUpdateUser({ ...user, isBvnVerified: true });
+          setIsBvnVerifying(false);
+      }, 2000);
+  }
 
-  const profileCompletion = formData.nin ? 85 : 50;
+  const profileCompletion = (user.nin ? 50 : 0) + (user.isBvnVerified ? 50 : 0);
 
   const inputClasses = "w-full px-3 py-2 border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-700 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500";
   const labelClasses = "block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1";
@@ -53,7 +63,7 @@ export const UserProfile: React.FC<UserProfileProps> = ({ user, onUpdateUser }) 
                   <div className="bg-green-600 h-2.5 rounded-full" style={{width: `${profileCompletion}%`}}></div>
               </div>
               <p className="text-sm font-semibold text-green-600">{profileCompletion}% Complete</p>
-              {profileCompletion < 100 && <p className="text-xs text-slate-500 dark:text-slate-400 mt-1">Provide your NIN to complete your profile.</p>}
+              {profileCompletion < 100 && <p className="text-xs text-slate-500 dark:text-slate-400 mt-1">Provide your NIN and verify your BVN to complete your profile.</p>}
           </div>
 
           <form onSubmit={handleSave} className="bg-white dark:bg-slate-800 rounded-xl shadow-md border border-slate-200 dark:border-slate-700">
@@ -95,6 +105,28 @@ export const UserProfile: React.FC<UserProfileProps> = ({ user, onUpdateUser }) 
                           <input type="text" name="ward" id="ward" value={user.ward} className="w-full px-3 py-2 border border-slate-300 dark:border-slate-600 bg-slate-100 dark:bg-slate-700/50 rounded-lg" disabled readOnly />
                       </div>
                   </div>
+                   <div className="pt-6 border-t dark:border-slate-700">
+                       <h4 className="text-md font-semibold text-slate-800 dark:text-slate-100">Identity Verification</h4>
+                       <div className="mt-4 flex flex-col sm:flex-row items-center justify-between bg-slate-50 dark:bg-slate-900/50 p-4 rounded-lg">
+                            <p className="text-sm text-slate-600 dark:text-slate-300">Bank Verification Number (BVN)</p>
+                            {user.isBvnVerified ? (
+                                <div className="flex items-center gap-2 px-3 py-1 bg-green-100 text-green-800 rounded-full text-sm font-semibold mt-2 sm:mt-0">
+                                    <span className="h-5 w-5">{ICONS.shieldCheck}</span>
+                                    Verified
+                                </div>
+                            ) : (
+                                <Button
+                                    type="button"
+                                    onClick={handleBvnVerification}
+                                    variant="outline"
+                                    isLoading={isBvnVerifying}
+                                    className="mt-2 sm:mt-0"
+                                >
+                                    Verify with BVN
+                                </Button>
+                            )}
+                       </div>
+                   </div>
               </div>
               <div className="bg-slate-50 dark:bg-slate-900/50 px-6 py-3 rounded-b-xl text-right">
                   <Button type="submit">Save Changes</Button>
