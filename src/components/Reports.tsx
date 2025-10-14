@@ -16,16 +16,17 @@ interface ReportsProps {
 export const Reports: React.FC<ReportsProps> = ({ applicants, users }) => {
 
   const reportData = useMemo(() => {
-    const totalLoanValue = applicants.reduce((sum, app) => sum + app.loanAmount, 0);
+    const totalLoanValue = applicants.reduce((sum: number, app) => sum + app.loanAmount, 0);
     const repaidLoans = applicants.filter(app => app.status === LoanStatus.Repaid);
     const disbursedLoans = applicants.filter(app => app.status === LoanStatus.Disbursed || app.status === LoanStatus.Repaid);
-    const totalRepaidAmount = repaidLoans.reduce((sum, app) => sum + app.loanAmount, 0);
-    const totalDisbursedAmount = disbursedLoans.reduce((sum, app) => sum + app.loanAmount, 0);
+    const totalRepaidAmount = repaidLoans.reduce((sum: number, app) => sum + app.loanAmount, 0);
+    const totalDisbursedAmount = disbursedLoans.reduce((sum: number, app) => sum + app.loanAmount, 0);
     
     const repaymentRate = totalDisbursedAmount > 0 ? (totalRepaidAmount / totalDisbursedAmount) * 100 : 0;
     
     const userWardMap = new Map(users.map(u => [u.id, u.ward]));
-    const applicationsByWard = applicants.reduce((acc, app) => {
+    // Fix: Explicitly type the initial value for reduce to ensure correct type inference for the accumulator.
+    const applicationsByWard = applicants.reduce((acc: Record<string, number>, app) => {
         const ward = userWardMap.get(app.userId) || 'Unknown';
         acc[ward] = (acc[ward] || 0) + 1;
         return acc;
@@ -33,19 +34,14 @@ export const Reports: React.FC<ReportsProps> = ({ applicants, users }) => {
 
     const wardChartData = Object.entries(applicationsByWard).map(([name, applications]) => ({ name, applications }));
 
-    const applicationsByMonth = applicants.reduce((acc, app) => {
+    // Fix: Explicitly type the initial value for reduce to ensure correct type inference for the accumulator.
+    const applicationsByMonth = applicants.reduce((acc: Record<string, number>, app) => {
         const month = new Date(app.applicationDate).toLocaleString('default', { month: 'short', year: '2-digit' });
         acc[month] = (acc[month] || 0) + 1;
         return acc;
     }, {} as Record<string, number>);
     
-    const sortedMonths = Object.keys(applicationsByMonth).sort((a, b) => {
-        const [monthA, yearA] = a.split(' ');
-        const [monthB, yearB] = b.split(' ');
-        const dateA = new Date(`${monthA} 1, 20${yearA}`);
-        const dateB = new Date(`${monthB} 1, 20${yearB}`);
-        return dateA.getTime() - dateB.getTime();
-    });
+    const sortedMonths = Object.keys(applicationsByMonth).sort((a, b) => new Date(`1 ${a}`) > new Date(`1 ${b}`) ? 1 : -1);
 
     const monthChartData = sortedMonths.map(month => ({
         name: month,
@@ -69,7 +65,7 @@ export const Reports: React.FC<ReportsProps> = ({ applicants, users }) => {
   return (
     <div className="space-y-6 animate-fade-in">
       <div className="flex justify-between items-center">
-        <h2 className="text-3xl font-bold text-slate-800">Reports & Analytics</h2>
+        <h2 className="text-3xl font-bold text-slate-800 dark:text-slate-100">Reports & Analytics</h2>
         <Button onClick={handleExport} variant="outline" className="flex items-center gap-2">
           {ICONS.export}
           Export to CSV
@@ -84,14 +80,14 @@ export const Reports: React.FC<ReportsProps> = ({ applicants, users }) => {
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-5 gap-6">
-         <div className="lg:col-span-3 bg-white p-4 sm:p-6 rounded-xl shadow-md border border-slate-200">
-            <h3 className="text-xl font-bold mb-4 text-slate-700">Applications by LGA Ward</h3>
+         <div className="lg:col-span-3 bg-white dark:bg-slate-800 p-4 sm:p-6 rounded-xl shadow-md border border-slate-200 dark:border-slate-700">
+            <h3 className="text-xl font-bold mb-4 text-slate-700 dark:text-slate-200">Applications by LGA Ward</h3>
             <div className="h-96">
                 <WardApplicationChart data={reportData.wardChartData} />
             </div>
          </div>
-         <div className="lg:col-span-2 bg-white p-4 sm:p-6 rounded-xl shadow-md border border-slate-200">
-            <h3 className="text-xl font-bold mb-4 text-slate-700">Application Trend</h3>
+         <div className="lg:col-span-2 bg-white dark:bg-slate-800 p-4 sm:p-6 rounded-xl shadow-md border border-slate-200 dark:border-slate-700">
+            <h3 className="text-xl font-bold mb-4 text-slate-700 dark:text-slate-200">Application Trend</h3>
             <div className="h-96">
                 <MonthlyTrendChart data={reportData.monthChartData} />
             </div>

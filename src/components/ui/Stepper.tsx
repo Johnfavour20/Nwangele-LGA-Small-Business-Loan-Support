@@ -40,7 +40,7 @@ export const Stepper: React.FC<StepperProps> = ({ steps, currentStep }) => {
               </>
             )}
              <span
-              className={`absolute top-10 left-1/2 -translate-x-1/2 w-24 text-center text-sm
+              className={`absolute top-10 left-1/2 -translate-x-1/2 hidden sm:block w-24 text-center text-sm
                 ${currentStep === step.id
                   ? 'font-bold text-green-700 dark:text-green-400'
                   : 'font-medium text-gray-600 dark:text-gray-400'

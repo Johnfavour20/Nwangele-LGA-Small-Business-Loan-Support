@@ -22,7 +22,7 @@ export const ConfirmationDialog: React.FC<ConfirmationDialogProps> = ({ isOpen, 
       onClick={onClose}
     >
       <div 
-        className="bg-white rounded-xl shadow-2xl p-6 sm:p-8 w-full max-w-md m-4 transform transition-all animate-scale-in"
+        className="bg-white dark:bg-slate-800 rounded-xl shadow-2xl p-6 sm:p-8 w-full max-w-md m-4 transform transition-all animate-fade-in"
         onClick={(e) => e.stopPropagation()}
       >
         <div className="sm:flex sm:items-start">
@@ -30,11 +30,11 @@ export const ConfirmationDialog: React.FC<ConfirmationDialogProps> = ({ isOpen, 
             <span className="text-red-600 h-6 w-6">{ICONS.warning}</span>
           </div>
           <div className="mt-3 text-center sm:mt-0 sm:ml-4 sm:text-left">
-            <h3 className="text-lg leading-6 font-bold text-slate-900" id="modal-title">
+            <h3 className="text-lg leading-6 font-bold text-slate-900 dark:text-slate-100" id="modal-title">
               {title}
             </h3>
             <div className="mt-2">
-              <p className="text-sm text-slate-600">
+              <p className="text-sm text-slate-600 dark:text-slate-400">
                 {message}
               </p>
             </div>
@@ -46,7 +46,7 @@ export const ConfirmationDialog: React.FC<ConfirmationDialogProps> = ({ isOpen, 
               onConfirm();
               onClose();
             }}
-            className="w-full justify-center sm:w-auto !bg-red-600 hover:!bg-red-700 focus:!ring-red-500"
+            className="w-full justify-center sm:w-auto bg-red-600 text-white hover:bg-red-700 focus:ring-red-500"
           >
             Confirm
           </Button>

@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import type { User } from '../types';
 import { Button } from './ui/Button';
-import { Spinner } from './ui/Spinner';
 
 interface SettingsProps {
   user: User;
@@ -9,13 +8,13 @@ interface SettingsProps {
 }
 
 const SettingsCard: React.FC<{ title: string, children: React.ReactNode, footer?: React.ReactNode }> = ({ title, children, footer }) => (
-    <div className="bg-white rounded-xl shadow-md border border-slate-200">
+    <div className="bg-white dark:bg-slate-800 rounded-xl shadow-md border border-slate-200 dark:border-slate-700">
         <div className="p-4 sm:p-6">
-            <h3 className="text-lg font-semibold text-slate-800">{title}</h3>
+            <h3 className="text-lg font-semibold text-slate-800 dark:text-slate-100">{title}</h3>
             <div className="mt-4 space-y-4">{children}</div>
         </div>
         {footer && (
-            <div className="bg-slate-50 px-6 py-3 rounded-b-xl text-right">
+            <div className="bg-slate-50 dark:bg-slate-900/50 px-6 py-3 rounded-b-xl text-right">
                 {footer}
             </div>
         )}
@@ -24,10 +23,10 @@ const SettingsCard: React.FC<{ title: string, children: React.ReactNode, footer?
 
 const Toggle: React.FC<{ label: string; enabled: boolean; setEnabled: (e: boolean) => void; }> = ({ label, enabled, setEnabled }) => (
     <label className="flex items-center justify-between cursor-pointer">
-        <span className="text-sm text-slate-600">{label}</span>
+        <span className="text-sm text-slate-600 dark:text-slate-300">{label}</span>
         <div className="relative">
             <input type="checkbox" className="sr-only" checked={enabled} onChange={() => setEnabled(!enabled)} />
-            <div className={`block w-10 h-6 rounded-full transition ${enabled ? 'bg-green-600' : 'bg-slate-300'}`}></div>
+            <div className={`block w-10 h-6 rounded-full transition ${enabled ? 'bg-green-600' : 'bg-slate-300 dark:bg-slate-600'}`}></div>
             <div className={`dot absolute left-1 top-1 bg-white w-4 h-4 rounded-full transition-transform ${enabled ? 'translate-x-full' : ''}`}></div>
         </div>
     </label>
@@ -39,9 +38,6 @@ export const Settings: React.FC<SettingsProps> = ({ user, onUpdateUser }) => {
         name: user.name,
         email: user.email,
     });
-    
-    const [isSaving, setIsSaving] = useState(false);
-    const [isUpdatingPassword, setIsUpdatingPassword] = useState(false);
     
     // Mock state for notification toggles
     const [notifications, setNotifications] = useState({
@@ -55,37 +51,28 @@ export const Settings: React.FC<SettingsProps> = ({ user, onUpdateUser }) => {
     };
 
     const handleSave = () => {
-        setIsSaving(true);
-        setTimeout(() => {
-            onUpdateUser({ ...user, ...formData });
-            setIsSaving(false);
-        }, 1500);
+        onUpdateUser({ ...user, ...formData });
     };
 
-    const handleUpdatePassword = () => {
-        setIsUpdatingPassword(true);
-        setTimeout(() => {
-            alert('Password updated successfully! (Simulation)');
-            setIsUpdatingPassword(false);
-        }, 1500);
-    };
+    const inputClasses = "w-full px-3 py-2 border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-700 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500";
+    const labelClasses = "block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1";
 
     return (
         <div className="space-y-6 max-w-4xl mx-auto animate-fade-in">
-            <h2 className="text-3xl font-bold text-slate-800">Settings</h2>
+            <h2 className="text-3xl font-bold text-slate-800 dark:text-slate-100">Settings</h2>
             
             <SettingsCard
                 title="Profile Information"
-                footer={<Button onClick={handleSave} disabled={isSaving}>{isSaving ? <Spinner size="sm"/> : 'Save Changes'}</Button>}
+                footer={<Button onClick={handleSave}>Save Changes</Button>}
             >
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                      <div>
-                        <label htmlFor="name" className="block text-sm font-medium text-slate-700 mb-1">Full Name</label>
-                        <input type="text" name="name" id="name" value={formData.name} onChange={handleChange} disabled={isSaving} className="w-full px-3 py-2 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500 disabled:opacity-50" />
+                        <label htmlFor="name" className={labelClasses}>Full Name</label>
+                        <input type="text" name="name" id="name" value={formData.name} onChange={handleChange} className={inputClasses} />
                     </div>
                     <div>
-                        <label htmlFor="email" className="block text-sm font-medium text-slate-700 mb-1">Email Address</label>
-                        <input type="email" name="email" id="email" value={formData.email} onChange={handleChange} disabled={isSaving} className="w-full px-3 py-2 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500 disabled:opacity-50" />
+                        <label htmlFor="email" className={labelClasses}>Email Address</label>
+                        <input type="email" name="email" id="email" value={formData.email} onChange={handleChange} className={inputClasses} />
                     </div>
                 </div>
             </SettingsCard>
@@ -98,17 +85,17 @@ export const Settings: React.FC<SettingsProps> = ({ user, onUpdateUser }) => {
             
             <SettingsCard 
                 title="Security"
-                footer={<Button variant="outline" onClick={handleUpdatePassword} disabled={isUpdatingPassword}>{isUpdatingPassword ? <Spinner size="sm" /> : 'Update Password'}</Button>}
+                footer={<Button variant="outline">Update Password</Button>}
             >
-                <p className="text-sm text-slate-600">Change your account password.</p>
+                <p className="text-sm text-slate-600 dark:text-slate-400">Change your account password.</p>
                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                      <div>
-                        <label className="block text-sm font-medium text-slate-700 mb-1">New Password</label>
-                        <input type="password" placeholder="••••••••" disabled={isUpdatingPassword} className="w-full px-3 py-2 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500 disabled:opacity-50" />
+                        <label className={labelClasses}>New Password</label>
+                        <input type="password" placeholder="••••••••" className={inputClasses} />
                     </div>
                     <div>
-                        <label className="block text-sm font-medium text-slate-700 mb-1">Confirm New Password</label>
-                        <input type="password" placeholder="••••••••" disabled={isUpdatingPassword} className="w-full px-3 py-2 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500 disabled:opacity-50" />
+                        <label className={labelClasses}>Confirm New Password</label>
+                        <input type="password" placeholder="••••••••" className={inputClasses} />
                     </div>
                 </div>
             </SettingsCard>

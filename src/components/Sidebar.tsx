@@ -26,13 +26,13 @@ const NavItem: React.FC<{
         onClick();
       }}
       className={`flex items-center p-3 my-1 rounded-lg transition-colors duration-200 ${
-        isActive ? 'bg-green-100 text-green-800 font-semibold' : 'text-slate-600 hover:bg-slate-100'
+        isActive
+          ? 'bg-green-100 text-green-800 font-semibold dark:bg-green-900/50 dark:text-green-300'
+          : 'text-slate-600 hover:bg-slate-100 dark:text-slate-400 dark:hover:bg-slate-700'
       } ${!isExpanded ? 'justify-center' : ''}`}
     >
       {icon}
-      <span
-        className={`ml-4 whitespace-nowrap transition-all duration-200 ${isExpanded ? 'opacity-100' : 'opacity-0 w-0'}`}
-      >
+      <span className={`ml-4 transition-opacity duration-300 whitespace-nowrap ${isExpanded ? 'opacity-100' : 'opacity-0'}`}>
         {label}
       </span>
     </a>
@@ -71,13 +71,13 @@ export const Sidebar: React.FC<SidebarProps> = ({ currentView, onNavigate, isOpe
   const navItems = getNavItems();
 
   return (
-    <aside className={`fixed top-0 left-0 h-full bg-white text-slate-700 border-r border-slate-200 flex flex-col z-30 transition-all duration-300 w-64 ${isOpen ? 'translate-x-0' : '-translate-x-full'} lg:translate-x-0 ${isOpen ? 'lg:w-64' : 'lg:w-20'}`}>
-      <div className={`flex items-center p-4 border-b border-slate-200 transition-all duration-300 h-20 ${isOpen ? 'justify-start' : 'justify-center'}`}>
+    <aside className={`fixed top-0 left-0 h-full bg-white dark:bg-slate-800 text-slate-700 dark:text-slate-300 border-r border-slate-200 dark:border-slate-700 flex flex-col z-30 transition-all duration-300 w-64 ${isOpen ? 'translate-x-0' : '-translate-x-full'} lg:translate-x-0 ${isOpen ? 'lg:w-64' : 'lg:w-20'}`}>
+      <div className={`flex items-center p-4 border-b border-slate-200 dark:border-slate-700 transition-all duration-300 h-20 ${isOpen ? 'justify-start' : 'justify-center'}`}>
         <div className="flex items-center gap-2">
             <ImoStateSeal />
             <NigeriaFlag />
         </div>
-        {isOpen && <h1 className="text-xl font-bold ml-2 whitespace-nowrap text-green-800">LGA LOANS</h1>}
+        {isOpen && <h1 className="text-xl font-bold ml-2 whitespace-nowrap text-green-800 dark:text-green-300">LGA LOANS</h1>}
       </div>
 
       <nav className="flex-1 p-2">
@@ -95,7 +95,7 @@ export const Sidebar: React.FC<SidebarProps> = ({ currentView, onNavigate, isOpe
         </ul>
       </nav>
 
-      <div className="p-2 border-t border-slate-200">
+      <div className="p-2 border-t border-slate-200 dark:border-slate-700">
         <ul>
            {userRole === UserRole.Admin && <NavItem icon={ICONS.settings} label="Settings" isActive={currentView === 'settings'} onClick={() => onNavigate('settings')} isExpanded={isOpen} />}
            {userRole === UserRole.Applicant && <NavItem icon={ICONS.profile} label="My Profile" isActive={currentView === 'my-profile'} onClick={() => onNavigate('my-profile')} isExpanded={isOpen} />}

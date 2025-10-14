@@ -14,22 +14,23 @@
   }
   
   .responsive-table td {
-    @apply block border-none border-b border-slate-100 p-4 text-right relative;
-    padding-left: 50%;
+    @apply block border-b border-slate-100 p-4 text-left;
+  }
+
+  .responsive-table tr td:last-child {
+    @apply border-b-0;
   }
 
   .responsive-table td:before {
-    /* This is the magic bit for labels */
     content: attr(data-label);
-    @apply absolute left-4 top-1/2 -translate-y-1/2 font-semibold text-slate-600 text-left;
+    @apply block font-semibold text-slate-500 text-xs mb-1 uppercase tracking-wider;
   }
 
-  /* Adjust alignment for specific cells */
+  /* Make actions align to the right and hide their label */
   .responsive-table td.actions-cell {
-    @apply pt-8;
+    @apply flex justify-end pt-2;
   }
-
-  .responsive-table td.badge-cell {
-      @apply pt-6 pb-6;
+  .responsive-table td.actions-cell:before {
+    display: none;
   }
 }

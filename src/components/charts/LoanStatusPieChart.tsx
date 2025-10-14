@@ -1,6 +1,7 @@
 import React from 'react';
 import { ResponsiveContainer, PieChart, Pie, Cell, Tooltip, Legend } from 'recharts';
 import { LoanStatus } from '../../types';
+import { useTheme } from '../../context/ThemeContext';
 
 interface PieChartProps {
   data: { name: string; value: number }[];
@@ -15,7 +16,10 @@ const COLORS: Record<LoanStatus, string> = {
 };
 
 export const LoanStatusPieChart: React.FC<PieChartProps> = ({ data }) => {
-  const legendColor = '#374151'; // gray-700
+  const { theme } = useTheme();
+  const legendColor = theme === 'dark' ? '#d1d5db' : '#374151';
+  const tooltipBg = theme === 'dark' ? '#1f2937' : '#ffffff';
+  const tooltipBorder = theme === 'dark' ? '#374151' : '#e2e8f0';
 
   return (
     <ResponsiveContainer width="100%" height="100%">
@@ -37,8 +41,8 @@ export const LoanStatusPieChart: React.FC<PieChartProps> = ({ data }) => {
         <Tooltip 
           formatter={(value) => `${value} applications`} 
           contentStyle={{ 
-            backgroundColor: '#ffffff',
-            borderColor: '#e2e8f0',
+            backgroundColor: tooltipBg,
+            borderColor: tooltipBorder,
             borderRadius: '0.75rem'
           }}
         />

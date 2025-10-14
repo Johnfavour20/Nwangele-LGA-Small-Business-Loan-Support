@@ -3,7 +3,7 @@ import React, { useState } from 'react';
 const ChevronIcon: React.FC<{ isRotated: boolean }> = ({ isRotated }) => (
   <svg
     xmlns="http://www.w3.org/2000/svg"
-    className={`h-5 w-5 transform transition-transform duration-300 text-gray-500 ${isRotated ? 'rotate-180' : ''}`}
+    className={`h-5 w-5 transform transition-transform duration-300 text-gray-500 dark:text-gray-400 ${isRotated ? 'rotate-180' : ''}`}
     fill="none"
     viewBox="0 0 24 24"
     stroke="currentColor"
@@ -22,22 +22,22 @@ export const CollapsibleSection: React.FC<CollapsibleSectionProps> = ({ title, c
   const [isOpen, setIsOpen] = useState(defaultOpen);
 
   return (
-    <div className="bg-white rounded-xl shadow-md border border-slate-200 overflow-hidden">
+    <div className="bg-white dark:bg-slate-800 rounded-xl shadow-md border border-slate-200 dark:border-slate-700 overflow-hidden">
       <button
         onClick={() => setIsOpen(!isOpen)}
         className="w-full flex justify-between items-center p-4 sm:p-5 text-left focus:outline-none focus-visible:ring-2 focus-visible:ring-green-500"
         aria-expanded={isOpen}
       >
-        <h3 className="text-lg font-bold text-gray-700">{title}</h3>
+        <h3 className="text-lg font-bold text-gray-700 dark:text-gray-200">{title}</h3>
         <ChevronIcon isRotated={isOpen} />
       </button>
       <div
         className={`transition-all duration-300 ease-in-out grid ${
-          isOpen ? 'grid-rows-[1fr]' : 'grid-rows-[0fr]'
+          isOpen ? 'grid-rows-[1fr] opacity-100' : 'grid-rows-[0fr] opacity-0'
         }`}
       >
         <div className="overflow-hidden">
-            <div className="p-4 sm:p-5 border-t border-slate-200">
+            <div className="p-4 sm:p-5 border-t border-slate-200 dark:border-slate-700">
               {children}
             </div>
         </div>

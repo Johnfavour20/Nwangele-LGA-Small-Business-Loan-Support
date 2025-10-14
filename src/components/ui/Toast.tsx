@@ -10,12 +10,12 @@ interface ToastProps {
 const toastConfig = {
   success: {
     icon: ICONS.checkmark,
-    bg: 'bg-green-600',
+    bg: 'bg-green-600 dark:bg-green-700',
     text: 'text-white',
   },
   error: {
     icon: ICONS.warning,
-    bg: 'bg-red-600',
+    bg: 'bg-red-600 dark:bg-red-700',
     text: 'text-white',
   },
 };

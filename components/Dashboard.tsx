@@ -19,7 +19,7 @@ const AdminDashboard: React.FC<Omit<DashboardProps, 'onStartNewApplication'>> = 
     const totalApplications = applicants.length;
     const totalDisbursed = applicants
         .filter(a => a.status === LoanStatus.Disbursed || a.status === LoanStatus.Repaid)
-        .reduce((sum, a) => sum + a.loanAmount, 0);
+        .reduce((sum: number, a) => sum + a.loanAmount, 0);
     const pendingApplications = applicants.filter(a => a.status === LoanStatus.Pending).length;
     const approvedApplications = applicants.filter(a => a.status === LoanStatus.Approved).length;
 

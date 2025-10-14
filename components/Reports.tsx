@@ -16,16 +16,17 @@ interface ReportsProps {
 export const Reports: React.FC<ReportsProps> = ({ applicants, users }) => {
 
   const reportData = useMemo(() => {
-    const totalLoanValue = applicants.reduce((sum, app) => sum + app.loanAmount, 0);
+    const totalLoanValue = applicants.reduce((sum: number, app) => sum + app.loanAmount, 0);
     const repaidLoans = applicants.filter(app => app.status === LoanStatus.Repaid);
     const disbursedLoans = applicants.filter(app => app.status === LoanStatus.Disbursed || app.status === LoanStatus.Repaid);
-    const totalRepaidAmount = repaidLoans.reduce((sum, app) => sum + app.loanAmount, 0);
-    const totalDisbursedAmount = disbursedLoans.reduce((sum, app) => sum + app.loanAmount, 0);
+    const totalRepaidAmount = repaidLoans.reduce((sum: number, app) => sum + app.loanAmount, 0);
+    const totalDisbursedAmount = disbursedLoans.reduce((sum: number, app) => sum + app.loanAmount, 0);
     
     const repaymentRate = totalDisbursedAmount > 0 ? (totalRepaidAmount / totalDisbursedAmount) * 100 : 0;
     
     const userWardMap = new Map(users.map(u => [u.id, u.ward]));
-    const applicationsByWard = applicants.reduce((acc, app) => {
+    // Fix: Explicitly type the initial value for reduce to ensure correct type inference for the accumulator.
+    const applicationsByWard = applicants.reduce((acc: Record<string, number>, app) => {
         const ward = userWardMap.get(app.userId) || 'Unknown';
         acc[ward] = (acc[ward] || 0) + 1;
         return acc;
@@ -33,7 +34,8 @@ export const Reports: React.FC<ReportsProps> = ({ applicants, users }) => {
 
     const wardChartData = Object.entries(applicationsByWard).map(([name, applications]) => ({ name, applications }));
 
-    const applicationsByMonth = applicants.reduce((acc, app) => {
+    // Fix: Explicitly type the initial value for reduce to ensure correct type inference for the accumulator.
+    const applicationsByMonth = applicants.reduce((acc: Record<string, number>, app) => {
         const month = new Date(app.applicationDate).toLocaleString('default', { month: 'short', year: '2-digit' });
         acc[month] = (acc[month] || 0) + 1;
         return acc;

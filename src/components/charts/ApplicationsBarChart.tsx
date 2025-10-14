@@ -1,13 +1,17 @@
 import React from 'react';
 import { ResponsiveContainer, BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend } from 'recharts';
+import { useTheme } from '../../context/ThemeContext';
 
 interface BarChartProps {
   data: { name: string; applications: number }[];
 }
 
 export const ApplicationsBarChart: React.FC<BarChartProps> = ({ data }) => {
-  const tickColor = '#475569'; // slate-600
-  const gridColor = '#e2e8f0'; // slate-200
+  const { theme } = useTheme();
+  const tickColor = theme === 'dark' ? '#94a3b8' : '#475569';
+  const gridColor = theme === 'dark' ? '#334155' : '#e2e8f0';
+  const tooltipBg = theme === 'dark' ? '#1e293b' : '#ffffff';
+  const tooltipBorder = theme === 'dark' ? '#334155' : '#e2e8f0';
 
   return (
     <ResponsiveContainer width="100%" height="100%">
@@ -26,8 +30,8 @@ export const ApplicationsBarChart: React.FC<BarChartProps> = ({ data }) => {
         <Tooltip 
             cursor={{fill: 'rgba(110, 231, 183, 0.1)'}} 
             contentStyle={{ 
-                backgroundColor: '#ffffff',
-                borderColor: '#e2e8f0',
+                backgroundColor: tooltipBg,
+                borderColor: tooltipBorder,
                 borderRadius: '0.75rem'
             }}
         />

@@ -1,13 +1,17 @@
 import React from 'react';
-import { ResponsiveContainer, LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip } from 'recharts';
+import { ResponsiveContainer, LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend } from 'recharts';
+import { useTheme } from '../../context/ThemeContext';
 
 interface ChartProps {
   data: { name: string; applications: number }[];
 }
 
 export const MonthlyTrendChart: React.FC<ChartProps> = ({ data }) => {
-  const tickColor = '#4b5563';
-  const gridColor = '#e5e7eb';
+  const { theme } = useTheme();
+  const tickColor = theme === 'dark' ? '#94a3b8' : '#4b5563';
+  const gridColor = theme === 'dark' ? '#334155' : '#e5e7eb';
+  const tooltipBg = theme === 'dark' ? '#1e293b' : '#ffffff';
+  const tooltipBorder = theme === 'dark' ? '#334155' : '#e5e7eb';
   const lineColor = '#059669'; // green-700
 
   return (
@@ -21,12 +25,12 @@ export const MonthlyTrendChart: React.FC<ChartProps> = ({ data }) => {
         <YAxis allowDecimals={false} tick={{ fontSize: 12, fill: tickColor }} />
         <Tooltip
             contentStyle={{ 
-                backgroundColor: '#ffffff',
-                borderColor: '#e5e7eb',
+                backgroundColor: tooltipBg,
+                borderColor: tooltipBorder,
                 borderRadius: '0.75rem'
             }}
         />
-        <Line type="monotone" dataKey="applications" stroke={lineColor} strokeWidth={2} dot={{ r: 4 }} activeDot={{ r: 6 }} name="Applications" />
+        <Line type="monotone" dataKey="applications" stroke={lineColor} strokeWidth={2} dot={{ r: 4 }} activeDot={{ r: 6 }} />
       </LineChart>
     </ResponsiveContainer>
   );

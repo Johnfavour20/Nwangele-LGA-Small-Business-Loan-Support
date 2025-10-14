@@ -2,13 +2,13 @@ import React from 'react';
 
 export const Spinner: React.FC<{ size?: 'sm' | 'md' | 'lg' }> = ({ size = 'md' }) => {
   const sizeClasses = {
-    sm: 'h-5 w-5',
+    sm: 'h-4 w-4',
     md: 'h-8 w-8',
     lg: 'h-12 w-12',
   };
   return (
     <svg
-      className={`animate-spin text-white ${sizeClasses[size]}`}
+      className={`animate-spin text-current ${sizeClasses[size]}`}
       xmlns="http://www.w3.org/2000/svg"
       fill="none"
       viewBox="0 0 24 24"

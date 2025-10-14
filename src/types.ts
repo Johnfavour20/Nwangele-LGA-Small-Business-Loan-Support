@@ -28,8 +28,8 @@ export interface User {
   role: UserRole;
   ward?: string;
   nin?: string;
-  profilePictureUrl?: string;
   isBvnVerified?: boolean;
+  profilePictureUrl?: string;
 }
 
 export interface Message {
