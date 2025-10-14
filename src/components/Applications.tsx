@@ -55,7 +55,7 @@ export const Applications: React.FC<ApplicationsProps> = ({ applicants, onViewPr
         {isApplicantView && <Button onClick={onStartNewApplication}>+ New Application</Button>}
       </div>
       <div className="overflow-x-auto">
-        <table className="w-full text-left">
+        <table className="w-full text-left responsive-table">
           <thead>
             <tr className="border-b dark:border-slate-700 bg-slate-50 dark:bg-slate-900/50">
               <th className="p-4 font-semibold text-slate-600 dark:text-slate-300">Applicant ID</th>
@@ -71,13 +71,13 @@ export const Applications: React.FC<ApplicationsProps> = ({ applicants, onViewPr
             {paginatedApplicants.length > 0 ? (
                 paginatedApplicants.map((app) => (
                   <tr key={app.id} className="border-b dark:border-slate-700 hover:bg-slate-50 dark:hover:bg-slate-700/50 transition-colors">
-                    <td className="p-4 font-mono text-sm text-slate-600 dark:text-slate-400">{app.id}</td>
-                    {!isApplicantView && <td className="p-4 font-medium">{app.name}</td>}
-                    <td className="p-4 text-slate-600 dark:text-slate-400">{app.businessName}</td>
-                    <td className="p-4 font-medium">₦{app.loanAmount.toLocaleString()}</td>
-                    <td className="p-4 text-slate-600 dark:text-slate-400">{app.applicationDate}</td>
-                    <td className="p-4"><Badge status={app.status} /></td>
-                    <td className="p-4 text-center">
+                    <td className="p-4 font-mono text-sm text-slate-600 dark:text-slate-400" data-label="Application ID">{app.id}</td>
+                    {!isApplicantView && <td className="p-4 font-medium" data-label="Applicant Name">{app.name}</td>}
+                    <td className="p-4 text-slate-600 dark:text-slate-400" data-label="Business Name">{app.businessName}</td>
+                    <td className="p-4 font-medium" data-label="Loan Amount">₦{app.loanAmount.toLocaleString()}</td>
+                    <td className="p-4 text-slate-600 dark:text-slate-400" data-label="Application Date">{app.applicationDate}</td>
+                    <td className="p-4" data-label="Status"><Badge status={app.status} /></td>
+                    <td className="p-4 text-center actions-cell" data-label="Actions">
                       <button
                         onClick={() => onViewProfile(app)}
                         className="text-green-600 hover:text-green-500 font-semibold text-sm"

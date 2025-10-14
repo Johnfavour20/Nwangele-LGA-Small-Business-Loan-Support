@@ -28,7 +28,7 @@ export const Users: React.FC<UsersProps> = ({ users }) => {
         <Button>+ Add New User</Button>
       </div>
       <div className="overflow-x-auto">
-        <table className="w-full text-left">
+        <table className="w-full text-left responsive-table">
           <thead>
             <tr className="border-b dark:border-slate-700 bg-slate-50 dark:bg-slate-900/50">
               <th className="p-4 font-semibold text-slate-600 dark:text-slate-300">Name</th>
@@ -41,9 +41,9 @@ export const Users: React.FC<UsersProps> = ({ users }) => {
           <tbody>
             {paginatedUsers.map((user) => (
               <tr key={user.id} className="border-b dark:border-slate-700 hover:bg-slate-50 dark:hover:bg-slate-700/50 transition-colors">
-                <td className="p-4 font-medium">{user.name}</td>
-                <td className="p-4 text-slate-600 dark:text-slate-400">{user.email}</td>
-                <td className="p-4">
+                <td className="p-4 font-medium" data-label="Name">{user.name}</td>
+                <td className="p-4 text-slate-600 dark:text-slate-400" data-label="Email">{user.email}</td>
+                <td className="p-4" data-label="Role">
                     <span className={`px-3 py-1 text-xs font-semibold rounded-full ${
                         user.role === 'Admin' ? 'bg-green-100 text-green-800' :
                         user.role === 'Loan Officer' ? 'bg-blue-100 text-blue-800' :
@@ -52,8 +52,8 @@ export const Users: React.FC<UsersProps> = ({ users }) => {
                         {user.role}
                     </span>
                 </td>
-                <td className="p-4 text-slate-600 dark:text-slate-400">{user.ward || 'N/A'}</td>
-                <td className="p-4 text-center">
+                <td className="p-4 text-slate-600 dark:text-slate-400" data-label="Ward">{user.ward || 'N/A'}</td>
+                <td className="p-4 text-center actions-cell" data-label="Actions">
                   <button className="text-green-600 hover:text-green-500 font-semibold text-sm mr-4">
                     Edit
                   </button>

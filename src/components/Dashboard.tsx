@@ -76,7 +76,7 @@ const AdminDashboard: React.FC<Omit<DashboardProps, 'onStartNewApplication'>> = 
                 <h3 className="text-xl font-bold mb-4 text-slate-700 dark:text-slate-200">Recent Applications</h3>
                 <p className="text-slate-500 dark:text-slate-400 text-sm mb-4">Showing the 5 most recent applications across the entire system. {searchTerm && `Filtered by "${searchTerm}".`}</p>
                 <div className="overflow-x-auto">
-                    <table className="w-full text-left">
+                    <table className="w-full text-left responsive-table">
                         <thead>
                             <tr className="border-b border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-900/50">
                                 <th className="p-3 font-semibold text-slate-600 dark:text-slate-300">Applicant Name</th>
@@ -91,12 +91,12 @@ const AdminDashboard: React.FC<Omit<DashboardProps, 'onStartNewApplication'>> = 
                             {filteredRecentApplications.length > 0 ? (
                                 filteredRecentApplications.map(app => (
                                     <tr key={app.id} className="border-b border-slate-200 dark:border-slate-700 hover:bg-slate-50 dark:hover:bg-slate-700/50">
-                                        <td className="p-3">{app.name}</td>
-                                        <td className="p-3 text-slate-600 dark:text-slate-400">{app.businessName}</td>
-                                        <td className="p-3 font-medium">₦{app.loanAmount.toLocaleString()}</td>
-                                        <td className="p-3 text-slate-600 dark:text-slate-400">{app.applicationDate}</td>
-                                        <td className="p-3"><Badge status={app.status} /></td>
-                                        <td className="p-3">
+                                        <td className="p-3" data-label="Applicant Name">{app.name}</td>
+                                        <td className="p-3 text-slate-600 dark:text-slate-400" data-label="Business Name">{app.businessName}</td>
+                                        <td className="p-3 font-medium" data-label="Amount">₦{app.loanAmount.toLocaleString()}</td>
+                                        <td className="p-3 text-slate-600 dark:text-slate-400" data-label="Date">{app.applicationDate}</td>
+                                        <td className="p-3" data-label="Status"><Badge status={app.status} /></td>
+                                        <td className="p-3 actions-cell" data-label="Action">
                                             <button onClick={() => onViewProfile(app)} className="text-green-600 hover:text-green-500 font-semibold flex items-center">
                                                 View
                                             </button>
@@ -153,7 +153,7 @@ const ApplicantDashboard: React.FC<DashboardProps> = ({ onViewProfile, onStartNe
                     <Button onClick={onStartNewApplication}>+ Start New Application</Button>
                 </div>
                  <div className="overflow-x-auto">
-                    <table className="w-full text-left">
+                    <table className="w-full text-left responsive-table">
                         <thead>
                             <tr className="border-b dark:border-slate-700 bg-slate-50 dark:bg-slate-900/50">
                                 <th className="p-3 font-semibold text-slate-600 dark:text-slate-300">Application ID</th>
@@ -168,12 +168,12 @@ const ApplicantDashboard: React.FC<DashboardProps> = ({ onViewProfile, onStartNe
                              {filteredMyApps.length > 0 ? (
                                 filteredMyApps.map(app => (
                                     <tr key={app.id} className="border-b dark:border-slate-700 hover:bg-slate-50 dark:hover:bg-slate-700/50">
-                                        <td className="p-3 font-mono text-sm">{app.id}</td>
-                                        <td className="p-3 text-slate-600 dark:text-slate-400">{app.businessName}</td>
-                                        <td className="p-3 font-medium">₦{app.loanAmount.toLocaleString()}</td>
-                                        <td className="p-3 text-slate-600 dark:text-slate-400">{app.applicationDate}</td>
-                                        <td className="p-3"><Badge status={app.status} /></td>
-                                        <td className="p-3">
+                                        <td className="p-3 font-mono text-sm" data-label="Application ID">{app.id}</td>
+                                        <td className="p-3 text-slate-600 dark:text-slate-400" data-label="Business Name">{app.businessName}</td>
+                                        <td className="p-3 font-medium" data-label="Amount">₦{app.loanAmount.toLocaleString()}</td>
+                                        <td className="p-3 text-slate-600 dark:text-slate-400" data-label="Date">{app.applicationDate}</td>
+                                        <td className="p-3" data-label="Status"><Badge status={app.status} /></td>
+                                        <td className="p-3 actions-cell" data-label="Action">
                                             <button onClick={() => onViewProfile(app)} className="text-green-600 hover:text-green-500 font-semibold">
                                                 View Details
                                             </button>
