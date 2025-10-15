@@ -41,7 +41,7 @@ export const Users: React.FC<UsersProps> = ({ users }) => {
           <tbody>
             {paginatedUsers.map((user) => (
               <tr key={user.id} className="border-b dark:border-slate-700 hover:bg-slate-50 dark:hover:bg-slate-700/50 transition-colors">
-                <td className="p-4 font-medium" data-label="Name">{user.name}</td>
+                <td className="p-4 font-semibold text-slate-800 dark:text-slate-200" data-label="Name">{user.name}</td>
                 <td className="p-4 text-slate-600 dark:text-slate-400" data-label="Email">{user.email}</td>
                 <td className="p-4" data-label="Role">
                     <span className={`px-3 py-1 text-xs font-semibold rounded-full ${

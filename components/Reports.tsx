@@ -44,15 +44,16 @@ export const Reports: React.FC<ReportsProps> = ({ applicants, users }) => {
         return acc;
     }, {} as Record<string, number>);
     
-    const sortedMonths = Object.keys(applicationsByMonth).sort((a, b) => {
+    // FIX: Refactored to use Object.entries for better type safety, resolving potential indexing errors.
+    const sortedMonthEntries = Object.entries(applicationsByMonth).sort(([a], [b]) => {
         const dateA = new Date(`01 ${a.replace("'", " 20")}`);
         const dateB = new Date(`01 ${b.replace("'", " 20")}`);
         return dateA.getTime() - dateB.getTime();
     });
 
-    const monthChartData = sortedMonths.map(month => ({
-        name: month,
-        applications: applicationsByMonth[month],
+    const monthChartData = sortedMonthEntries.map(([name, applications]) => ({
+        name,
+        applications,
     }));
 
     return {

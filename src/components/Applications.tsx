@@ -121,7 +121,7 @@ export const Applications: React.FC<ApplicationsProps> = ({ applicants, onViewPr
                 paginatedApplicants.map((app) => (
                   <tr key={app.id} className="border-b dark:border-slate-700 hover:bg-slate-50 dark:hover:bg-slate-700/50 transition-colors">
                     <td className="p-4 font-mono text-sm text-slate-600 dark:text-slate-400" data-label="Application ID">{app.id}</td>
-                    {!isApplicantView && <td className="p-4 font-medium" data-label="Applicant Name">{app.name}</td>}
+                    {!isApplicantView && <td className="p-4 font-semibold text-slate-800 dark:text-slate-200" data-label="Applicant Name">{app.name}</td>}
                     <td className="p-4 text-slate-600 dark:text-slate-400" data-label="Business Name">{app.businessName}</td>
                     <td className="p-4 font-medium" data-label="Loan Amount">₦{app.loanAmount.toLocaleString()}</td>
                     <td className="p-4 text-slate-600 dark:text-slate-400" data-label="Application Date">{app.applicationDate}</td>

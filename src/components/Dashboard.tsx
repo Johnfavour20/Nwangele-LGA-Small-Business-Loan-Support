@@ -91,7 +91,7 @@ const AdminDashboard: React.FC<Omit<DashboardProps, 'onStartNewApplication'>> = 
                             {filteredRecentApplications.length > 0 ? (
                                 filteredRecentApplications.map(app => (
                                     <tr key={app.id} className="border-b border-slate-200 dark:border-slate-700 hover:bg-slate-50 dark:hover:bg-slate-700/50">
-                                        <td className="p-3" data-label="Applicant Name">{app.name}</td>
+                                        <td className="p-3 font-semibold text-slate-800 dark:text-slate-200" data-label="Applicant Name">{app.name}</td>
                                         <td className="p-3 text-slate-600 dark:text-slate-400" data-label="Business Name">{app.businessName}</td>
                                         <td className="p-3 font-medium" data-label="Amount">₦{app.loanAmount.toLocaleString()}</td>
                                         <td className="p-3 text-slate-600 dark:text-slate-400" data-label="Date">{app.applicationDate}</td>
