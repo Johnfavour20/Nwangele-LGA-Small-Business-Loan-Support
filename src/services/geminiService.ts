@@ -1,3 +1,4 @@
+
 import { GoogleGenAI, Type, GenerateContentResponse } from "@google/genai";
 import type { Applicant, GeminiAnalysis, GroundedAnalysis } from '../types';
 
@@ -116,8 +117,8 @@ export const analyzeApplicationWithSearch = async (applicant: Applicant): Promis
         const groundingChunks = response.candidates?.[0]?.groundingMetadata?.groundingChunks || [];
         
         // FIX: Refactored to be more type-safe by filtering for valid web chunks before mapping.
-        const sources = groundingChunks
-            .filter((chunk: any): chunk is { web: { uri: string; title?: string } } => chunk.web && chunk.web.uri)
+        const sources = (groundingChunks as any[])
+            .filter((chunk: any): chunk is { web: { uri: string; title?: string } } => chunk?.web?.uri)
             .map(chunk => ({
                 uri: chunk.web.uri,
                 title: chunk.web.title || 'Unknown Source'

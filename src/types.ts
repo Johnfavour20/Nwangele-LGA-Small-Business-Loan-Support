@@ -28,8 +28,9 @@ export interface User {
   role: UserRole;
   ward?: string;
   nin?: string;
-  isBvnVerified?: boolean;
+  // FIX: Added optional fields for profile picture and BVN verification status.
   profilePictureUrl?: string;
+  isBvnVerified?: boolean;
 }
 
 export interface Message {
@@ -37,7 +38,7 @@ export interface Message {
   senderId: string;
   senderName: string;
   content: string;
-  timestamp: string;
+  timestamp: string; // ISO string
 }
 
 export interface Applicant {
@@ -65,22 +66,25 @@ export interface GeminiAnalysis {
   riskLevel: 'Low' | 'Medium' | 'High';
 }
 
+// FIX: Added missing GroundedAnalysis type for geminiService.
 export interface GroundedAnalysis {
   text: string;
-  sources: { uri: string; title: string }[];
+  sources: {
+    uri: string;
+    title: string;
+  }[];
 }
 
-
+// FIX: Added missing Notification type for UI components.
 export interface Notification {
   id: string;
-  userId: string; // The user who should receive the notification
+  type: 'new_application' | 'status_update' | 'message';
   title: string;
   message: string;
-  timestamp: string;
+  timestamp: string; // ISO string
   isRead: boolean;
   link?: {
     view: 'profile';
     applicantId: string;
   };
-  type: 'message' | 'status_update' | 'new_application';
 }

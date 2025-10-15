@@ -1,19 +1,14 @@
 import React, { useState, useEffect } from 'react';
-import type { Applicant, GeminiAnalysis, User, GroundedAnalysis } from '../types';
+import type { Applicant, GeminiAnalysis } from '../types';
 import { LoanStatus, UserRole } from '../types';
 import { useAuth } from '../App';
-import { analyzeApplication, analyzeApplicationWithSearch } from '../services/geminiService';
+import { analyzeApplication } from '../services/geminiService';
 import { Badge } from './ui/Badge';
 import { Button } from './ui/Button';
 import { Messaging } from './Messaging';
-import { ConfirmationDialog } from './ui/ConfirmationDialog';
-import { Spinner } from './ui/Spinner';
-import { CollapsibleSection } from './ui/CollapsibleSection';
-import { ICONS } from '../constants';
 
 interface ApplicantProfileProps {
   applicant: Applicant;
-  user?: User;
   onBack: () => void;
   onUpdateStatus: (applicantId: string, newStatus: LoanStatus) => void;
   onUpdateApplicantDetails: (applicantId: string, details: Partial<Applicant>) => void;
@@ -91,66 +86,42 @@ const ChecklistItem: React.FC<{ text: string; isChecked: boolean; }> = ({ text, 
     </li>
 );
 
-export const ApplicantProfile: React.FC<ApplicantProfileProps> = ({ applicant, user, onBack, onUpdateStatus, onUpdateApplicantDetails, onSendMessage }) => {
+export const ApplicantProfile: React.FC<ApplicantProfileProps> = ({ applicant, onBack, onUpdateStatus, onUpdateApplicantDetails, onSendMessage }) => {
     const { currentUser } = useAuth();
     const [analysis, setAnalysis] = useState<GeminiAnalysis | null>(null);
-    const [isLoadingAnalysis, setIsLoadingAnalysis] = useState(true);
+    const [isLoading, setIsLoading] = useState(true);
     const [error, setError] = useState<string | null>(null);
     const [activeTab, setActiveTab] = useState('details');
-    const [isConfirmOpen, setConfirmOpen] = useState(false);
-    const [actionToConfirm, setActionToConfirm] = useState<{ type: 'approve' | 'reject' } | null>(null);
-    const [groundedAnalysis, setGroundedAnalysis] = useState<GroundedAnalysis | null>(null);
-    const [isGroundedLoading, setIsGroundedLoading] = useState(false);
-    const [groundedError, setGroundedError] = useState<string | null>(null);
     
     const isActionable = currentUser?.role === UserRole.Admin || currentUser?.role === UserRole.Officer;
 
     useEffect(() => {
         const fetchAnalysis = async () => {
             if (!isActionable) {
-                setIsLoadingAnalysis(false);
+                setIsLoading(false);
                 return;
             }
             try {
-                setIsLoadingAnalysis(true);
+                setIsLoading(true);
                 setError(null);
                 const result = await analyzeApplication(applicant);
                 setAnalysis(result);
             } catch (err) {
                 setError(err instanceof Error ? err.message : 'Failed to load AI analysis.');
             } finally {
-                setIsLoadingAnalysis(false);
+                setIsLoading(false);
             }
         };
 
         fetchAnalysis();
     }, [applicant, isActionable]);
 
-    const handleGroundedAnalysis = async () => {
-        setIsGroundedLoading(true);
-        setGroundedError(null);
-        try {
-            const result = await analyzeApplicationWithSearch(applicant);
-            setGroundedAnalysis(result);
-        } catch (err) {
-            setGroundedError(err instanceof Error ? err.message : 'Failed to load grounded analysis.');
-        } finally {
-            setIsGroundedLoading(false);
-        }
-    };
+    const handleApprove = () => onUpdateStatus(applicant.id, LoanStatus.Approved);
+    const handleReject = () => onUpdateStatus(applicant.id, LoanStatus.Rejected);
 
-    const handleConfirmAction = () => {
-        if (actionToConfirm?.type === 'approve') {
-            onUpdateStatus(applicant.id, LoanStatus.Approved);
-        } else if (actionToConfirm?.type === 'reject') {
-            onUpdateStatus(applicant.id, LoanStatus.Rejected);
-        }
-        setActionToConfirm(null);
-    };
-    
     const handleLocalSendMessage = (content: string) => {
         onSendMessage(applicant.id, content);
-    }
+    };
 
     const maskedAccountNumber = applicant.accountNumber ? `******${applicant.accountNumber.slice(-4)}` : 'N/A';
     
@@ -168,6 +139,12 @@ export const ApplicantProfile: React.FC<ApplicantProfileProps> = ({ applicant, u
                         <Badge status={applicant.status} />
                     </div>
                 </div>
+                <div className="mt-6 grid grid-cols-2 md:grid-cols-4 gap-6 border-t border-slate-200 dark:border-slate-700 pt-6">
+                    <ProfileDetail label="Loan Amount" value={`₦${applicant.loanAmount.toLocaleString()}`} />
+                    <ProfileDetail label="Business Sector" value={applicant.sector} />
+                    <ProfileDetail label="Application Date" value={applicant.applicationDate} />
+                    <ProfileDetail label="Application ID" value={<span className="font-mono text-sm">{applicant.id}</span>} />
+                </div>
             </div>
 
             <div className="border-b border-slate-200 dark:border-slate-700">
@@ -179,22 +156,15 @@ export const ApplicantProfile: React.FC<ApplicantProfileProps> = ({ applicant, u
             {activeTab === 'details' && (
                 <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 animate-fade-in">
                     <div className="lg:col-span-2 space-y-6">
-                        <CollapsibleSection title="Applicant & Business Information">
-                            <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
-                                <ProfileDetail label="Applicant Name" value={applicant.name} />
-                                <ProfileDetail label="Business Name" value={applicant.businessName} />
-                                <ProfileDetail label="Business Sector" value={applicant.sector} />
-                                <ProfileDetail label="Application Date" value={applicant.applicationDate} />
-                            </div>
-                        </CollapsibleSection>
-                         <CollapsibleSection title="Loan Details">
+                        <div className="bg-white dark:bg-slate-800 p-4 sm:p-6 rounded-xl shadow-md border border-slate-200 dark:border-slate-700">
+                            <h3 className="text-xl font-bold mb-4 text-slate-700 dark:text-slate-200">Application Details</h3>
                             <div className="space-y-4">
-                                <ProfileDetail label="Loan Amount" value={`₦${applicant.loanAmount.toLocaleString()}`} />
                                 <ProfileDetail label="Purpose of Loan" value={applicant.loanPurpose} />
                                 <ProfileDetail label="Business Description" value={<p className="whitespace-pre-wrap">{applicant.businessDescription}</p>} />
                             </div>
-                        </CollapsibleSection>
-                        <CollapsibleSection title="Uploaded Documents">
+                        </div>
+                        <div className="bg-white dark:bg-slate-800 p-4 sm:p-6 rounded-xl shadow-md border border-slate-200 dark:border-slate-700">
+                            <h3 className="text-xl font-bold mb-4 text-slate-700 dark:text-slate-200">Uploaded Documents</h3>
                             {applicant.documents.length > 0 ? (
                                 <ul className="space-y-2">
                                     {applicant.documents.map(doc => (
@@ -207,7 +177,7 @@ export const ApplicantProfile: React.FC<ApplicantProfileProps> = ({ applicant, u
                             ) : (
                                 <p className="text-slate-500 dark:text-slate-400">No documents were uploaded.</p>
                             )}
-                        </CollapsibleSection>
+                        </div>
                     </div>
 
                     {isActionable && (
@@ -216,9 +186,9 @@ export const ApplicantProfile: React.FC<ApplicantProfileProps> = ({ applicant, u
                                 <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 text-green-600" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z" /></svg>
                                 AI-Powered Analysis
                             </h3>
-                            {isLoadingAnalysis && <div className="text-center p-8 flex justify-center items-center"><Spinner /></div>}
+                            {isLoading && <div className="text-center p-8"><p>Analyzing application...</p></div>}
                             {error && <div className="text-center p-8 text-red-500"><p>{error}</p></div>}
-                            {!isLoadingAnalysis && !error && analysis && (
+                            {!isLoading && !error && analysis && (
                                 <div className="space-y-4 text-sm">
                                     <div><p className="font-semibold text-slate-600 dark:text-slate-300 mb-1">Risk Assessment: <span className={`font-bold ${analysis.riskLevel === 'Low' ? 'text-green-500' : analysis.riskLevel === 'Medium' ? 'text-yellow-500' : 'text-red-500'}`}>{analysis.riskLevel}</span></p></div>
                                     <div><p className="font-semibold text-slate-600 dark:text-slate-300 mb-1">Summary:</p><p className="text-slate-500 dark:text-slate-400">{analysis.summary}</p></div>
@@ -234,39 +204,11 @@ export const ApplicantProfile: React.FC<ApplicantProfileProps> = ({ applicant, u
                                             {analysis.risks.map((r, i) => <li key={i}>{r}</li>)}
                                         </ul>
                                     </div>
-                                    <div className="pt-4 mt-4 border-t dark:border-slate-700">
-                                        <Button onClick={handleGroundedAnalysis} variant="outline" size="sm" isLoading={isGroundedLoading} className="w-full">
-                                            Analyze with Google Search
-                                        </Button>
-                                    </div>
-                                    {isGroundedLoading && <div className="text-center p-4 flex justify-center items-center"><Spinner /></div>}
-                                    {groundedError && <div className="text-center p-4 text-red-500"><p>{groundedError}</p></div>}
-                                    {groundedAnalysis && (
-                                        <div className="mt-4 space-y-3 text-sm animate-fade-in">
-                                            <p className="font-semibold text-slate-600 dark:text-slate-300">Grounded Analysis Summary:</p>
-                                            <p className="text-slate-500 dark:text-slate-400 whitespace-pre-wrap">{groundedAnalysis.text}</p>
-                                            {groundedAnalysis.sources.length > 0 && (
-                                                 <div>
-                                                    <p className="font-semibold text-slate-600 dark:text-slate-300 mb-2">Sources:</p>
-                                                    <ul className="space-y-1 text-blue-600 dark:text-blue-400">
-                                                        {groundedAnalysis.sources.map((source, i) => (
-                                                            <li key={i} className="flex items-center gap-2">
-                                                                <span className="w-4 h-4 text-slate-500">{ICONS.link}</span>
-                                                                <a href={source.uri} target="_blank" rel="noopener noreferrer" className="truncate hover:underline text-xs" title={source.uri}>
-                                                                    {source.title}
-                                                                </a>
-                                                            </li>
-                                                        ))}
-                                                    </ul>
-                                                 </div>
-                                            )}
-                                        </div>
-                                    )}
                                 </div>
                             )}
                             <div className="mt-6 pt-6 border-t dark:border-slate-700 flex gap-4">
-                                <Button onClick={() => { setActionToConfirm({type: 'approve'}); setConfirmOpen(true); }} disabled={applicant.status !== LoanStatus.Pending}>Approve</Button>
-                                <Button onClick={() => { setActionToConfirm({type: 'reject'}); setConfirmOpen(true); }} variant="outline" className="!border-red-500 !text-red-500 hover:!bg-red-50 dark:!border-red-500 dark:!text-red-500 dark:hover:!bg-red-500/10" disabled={applicant.status !== LoanStatus.Pending}>Reject</Button>
+                                <Button onClick={handleApprove} disabled={applicant.status !== LoanStatus.Pending}>Approve</Button>
+                                <Button onClick={handleReject} variant="outline" className="!border-red-500 !text-red-500 hover:!bg-red-50 dark:!border-red-500 dark:!text-red-500 dark:hover:!bg-red-500/10" disabled={applicant.status !== LoanStatus.Pending}>Reject</Button>
                             </div>
                         </div>
                     )}
@@ -311,8 +253,7 @@ export const ApplicantProfile: React.FC<ApplicantProfileProps> = ({ applicant, u
                         <div className="bg-white dark:bg-slate-800 p-4 sm:p-6 rounded-xl shadow-md border border-slate-200 dark:border-slate-700">
                             <h3 className="text-xl font-bold mb-4 text-slate-700 dark:text-slate-200">Verification Checklist</h3>
                             <ul className="space-y-3">
-                               <ChecklistItem text="Identity Verified (NIN)" isChecked={!!user?.nin} />
-                               <ChecklistItem text="Identity Verified (BVN)" isChecked={!!user?.isBvnVerified} />
+                               <ChecklistItem text="Identity Verified (NIN)" isChecked={!!currentUser?.nin} />
                                <ChecklistItem text="Documents Reviewed" isChecked={applicant.documents.length > 0} />
                                <ChecklistItem text="Bank Account Details Provided" isChecked={!!applicant.accountNumber} />
                             </ul>
@@ -320,8 +261,8 @@ export const ApplicantProfile: React.FC<ApplicantProfileProps> = ({ applicant, u
                     )}
                 </div>
             )}
-            
-             {activeTab === 'communication' && currentUser && (
+
+            {activeTab === 'communication' && currentUser && (
                  <div className="bg-white dark:bg-slate-800 rounded-xl shadow-md border border-slate-200 dark:border-slate-700 animate-fade-in">
                     <Messaging 
                         messages={applicant.messages || []}
@@ -330,14 +271,6 @@ export const ApplicantProfile: React.FC<ApplicantProfileProps> = ({ applicant, u
                     />
                 </div>
             )}
-
-            <ConfirmationDialog 
-                isOpen={isConfirmOpen}
-                onClose={() => setConfirmOpen(false)}
-                onConfirm={handleConfirmAction}
-                title={`Confirm Application ${actionToConfirm?.type === 'approve' ? 'Approval' : 'Rejection'}`}
-                message={`Are you sure you want to ${actionToConfirm?.type} this application? This action cannot be undone.`}
-            />
         </div>
     );
 };

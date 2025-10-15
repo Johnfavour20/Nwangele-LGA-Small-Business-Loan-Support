@@ -1,11 +1,7 @@
-import React, { useState, useRef, useEffect } from 'react';
+import React from 'react';
 import { ICONS } from '../constants';
-import { useAuth } from '../App';
-import type { View } from '../App';
+import { useAuth, View } from '../App';
 import { ThemeToggle } from './ui/ThemeToggle';
-import type { Notification } from '../types';
-import { NotificationPanel } from './ui/NotificationPanel';
-import { Button } from './ui/Button';
 
 interface HeaderProps {
     onToggleSidebar: () => void;
@@ -13,46 +9,11 @@ interface HeaderProps {
     currentView: View;
     searchTerm: string;
     onSearchChange: (term: string) => void;
-    notifications: Notification[];
-    onMarkAsRead: (id: string) => void;
-    onMarkAllAsRead: () => void;
-    onNavigate: (view: View, applicantId?: string) => void;
 }
 
-export const Header: React.FC<HeaderProps> = ({ 
-    onToggleSidebar, 
-    isSidebarOpen, 
-    currentView, 
-    searchTerm, 
-    onSearchChange,
-    notifications,
-    onMarkAsRead,
-    onMarkAllAsRead,
-    onNavigate
-}) => {
+export const Header: React.FC<HeaderProps> = ({ onToggleSidebar, isSidebarOpen, currentView, searchTerm, onSearchChange }) => {
   const { currentUser } = useAuth();
-  const [isNotificationsOpen, setNotificationsOpen] = useState(false);
   const showSearchBar = ['dashboard', 'applications', 'profile'].includes(currentView);
-  const unreadCount = notifications.filter(n => !n.isRead).length;
-
-  const notificationRef = useRef<HTMLDivElement>(null);
-
-  useEffect(() => {
-    const handleClickOutside = (event: MouseEvent) => {
-      if (notificationRef.current && !notificationRef.current.contains(event.target as Node)) {
-        setNotificationsOpen(false);
-      }
-    };
-    document.addEventListener("mousedown", handleClickOutside);
-    return () => document.removeEventListener("mousedown", handleClickOutside);
-  }, []);
-  
-  const handlePanelNavigate = (link: Notification['link']) => {
-      if (link) {
-          onNavigate(link.view, link.applicantId);
-      }
-  }
-
 
   return (
     <header className="bg-white dark:bg-slate-800 shadow-sm p-4 flex items-center justify-between sticky top-0 z-20 h-20 border-b border-slate-200 dark:border-slate-700">
@@ -82,35 +43,9 @@ export const Header: React.FC<HeaderProps> = ({
             </div>
         )}
         <ThemeToggle />
-         <div ref={notificationRef} className="relative">
-             <Button
-              variant="outline"
-              size="sm"
-              onClick={() => setNotificationsOpen(prev => !prev)}
-              className="p-2 !rounded-full relative"
-              aria-label={`${unreadCount} unread notifications`}
-            >
-              {ICONS.bell}
-              {unreadCount > 0 && (
-                <span className="absolute -top-1 -right-1 flex h-4 w-4">
-                  <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-red-400 opacity-75"></span>
-                  <span className="relative inline-flex rounded-full h-4 w-4 bg-red-500 text-white text-xs items-center justify-center">{unreadCount}</span>
-                </span>
-              )}
-            </Button>
-            {isNotificationsOpen && (
-                <NotificationPanel 
-                    notifications={notifications}
-                    onMarkAsRead={onMarkAsRead}
-                    onMarkAllAsRead={onMarkAllAsRead}
-                    onNavigate={handlePanelNavigate}
-                    onClose={() => setNotificationsOpen(false)}
-                />
-            )}
-        </div>
         <div className="flex items-center space-x-2">
             <img 
-              src={currentUser?.profilePictureUrl || `https://i.pravatar.cc/40?u=${currentUser?.email}`}
+              src={`https://i.pravatar.cc/40?u=${currentUser?.email}`}
               alt="User" 
               className="w-10 h-10 rounded-full object-cover border-2 border-green-500"
             />

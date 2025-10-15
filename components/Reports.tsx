@@ -1,3 +1,5 @@
+
+
 import React, { useMemo } from 'react';
 import type { Applicant, User } from '../types';
 import { LoanStatus } from '../types';
@@ -31,7 +33,7 @@ export const Reports: React.FC<ReportsProps> = ({ applicants, users }) => {
         const ward = userWardMap.get(app.userId) || 'Unknown';
         acc[ward] = (acc[ward] || 0) + 1;
         return acc;
-    }, {});
+    }, {} as Record<string, number>);
 
     const wardChartData = Object.entries(applicationsByWard).map(([name, applications]) => ({ name, applications }));
 
@@ -40,7 +42,7 @@ export const Reports: React.FC<ReportsProps> = ({ applicants, users }) => {
         const month = new Date(app.applicationDate).toLocaleString('default', { month: 'short', year: '2-digit' });
         acc[month] = (acc[month] || 0) + 1;
         return acc;
-    }, {});
+    }, {} as Record<string, number>);
     
     const sortedMonths = Object.keys(applicationsByMonth).sort((a, b) => {
         const dateA = new Date(`01 ${a.replace("'", " 20")}`);
